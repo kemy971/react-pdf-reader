@@ -1,8 +1,10 @@
 import React, {Component} from "react";
+import ReactDOM from 'react-dom';
 import "pdfjs-dist/webpack";
 import "pdfjs-dist/web/compatibility";
 import "waypoints/lib/noframework.waypoints.js";
 import {TextLayerBuilder} from "./plugin/TextLayerBuilder";
+import Viewer from './Viewer'
 
 let PDFJS = window.PDFJS;
 let Waypoint = window.Waypoint;
@@ -43,10 +45,12 @@ class Page extends Component {
 
     initWaypoint = pageHeight => {
         const {page, onVisibleOnViewport} = this.props;
+        const context = document.querySelector('.pdf-viewer')
         this.waypoints = [
             new Waypoint({
             offset: pageHeight / 4,
             element: this._page,
+            context: context,
             handler: direction => {
                 if (direction === "down") {
                     onVisibleOnViewport(page.pageIndex);
@@ -57,6 +61,7 @@ class Page extends Component {
         new Waypoint({
             offset: -pageHeight / 3,
             element: this._page,
+            context: context,
             handler: direction => {
                 if (direction === "up") {
                     onVisibleOnViewport(page.pageIndex);
@@ -67,6 +72,7 @@ class Page extends Component {
         new Waypoint({
             offset: pageHeight,
             element: this._page,
+            context: context,
             handler: () => {
                 if (!this.pageRendered) {
                     this.renderPage();

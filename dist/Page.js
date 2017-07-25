@@ -10,6 +10,10 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require("react-dom");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 require("pdfjs-dist/webpack");
 
 require("pdfjs-dist/web/compatibility");
@@ -17,6 +21,10 @@ require("pdfjs-dist/web/compatibility");
 require("waypoints/lib/noframework.waypoints.js");
 
 var _TextLayerBuilder = require("./plugin/TextLayerBuilder");
+
+var _Viewer = require("./Viewer");
+
+var _Viewer2 = _interopRequireDefault(_Viewer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56,9 +64,11 @@ var Page = function (_Component) {
                 page = _this$props.page,
                 onVisibleOnViewport = _this$props.onVisibleOnViewport;
 
+            var context = document.querySelector('.pdf-viewer');
             _this.waypoints = [new Waypoint({
                 offset: pageHeight / 4,
                 element: _this._page,
+                context: context,
                 handler: function handler(direction) {
                     if (direction === "down") {
                         onVisibleOnViewport(page.pageIndex);
@@ -67,6 +77,7 @@ var Page = function (_Component) {
             }), new Waypoint({
                 offset: -pageHeight / 3,
                 element: _this._page,
+                context: context,
                 handler: function handler(direction) {
                     if (direction === "up") {
                         onVisibleOnViewport(page.pageIndex);
@@ -75,6 +86,7 @@ var Page = function (_Component) {
             }), new Waypoint({
                 offset: pageHeight,
                 element: _this._page,
+                context: context,
                 handler: function handler() {
                     if (!_this.pageRendered) {
                         _this.renderPage();

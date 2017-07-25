@@ -108,10 +108,10 @@ var ThumbnailViewer = function (_Component) {
             return _react2.default.createElement(
                 'section',
                 { className: 'pdf-thumbnail-viewer' },
-                !isLoading ? this.thumbnails.map(function (_ref2) {
+                !isLoading ? this.thumbnails.map(function (_ref2, index) {
                     var pageIndex = _ref2.pageIndex,
                         src = _ref2.src;
-                    return _react2.default.createElement(Thumbnail, { src: src, pageIndex: pageIndex,
+                    return _react2.default.createElement(Thumbnail, { key: index, src: src, pageIndex: pageIndex,
                         isCurrentPage: currentPage === pageIndex,
                         onSelect: function onSelect() {
                             return _onSelect(pageIndex);

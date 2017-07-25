@@ -74,7 +74,7 @@ class ThumbnailViewer extends Component {
             <section className="pdf-thumbnail-viewer">
                 {
                     !isLoading ?
-                        this.thumbnails.map(({pageIndex, src}) => <Thumbnail src={src} pageIndex={pageIndex}
+                        this.thumbnails.map(({pageIndex, src}, index) => <Thumbnail key={index} src={src} pageIndex={pageIndex}
                                                                              isCurrentPage={currentPage === pageIndex}
                                                                              onSelect={() => onSelect(pageIndex)}/>)
                         : null}
