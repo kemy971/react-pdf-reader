@@ -143,8 +143,8 @@ var PDFReader = function (_Component) {
                     "div",
                     null,
                     _react2.default.createElement(
-                        "header",
-                        null,
+                        "div",
+                        { className: "pdf-reader-header" },
                         _react2.default.createElement(
                             "div",
                             { className: "toggle-sidebar" },
