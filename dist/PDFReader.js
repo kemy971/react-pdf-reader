@@ -167,8 +167,8 @@ var PDFReader = function (_Component) {
                         _react2.default.createElement(
                             "div",
                             { className: "zoom-actions" },
-                            _react2.default.createElement(_Button2.default, _extends({}, btnZoomIn, { onClick: this.zoomIn })),
-                            _react2.default.createElement(_Button2.default, _extends({}, btnZoomOut, { onClick: this.zoomOut }))
+                            _react2.default.createElement(_Button2.default, _extends({}, btnZoomIn, { clickHandler: this.zoomIn })),
+                            _react2.default.createElement(_Button2.default, _extends({}, btnZoomOut, { clickHandler: this.zoomOut }))
                         ),
                         _react2.default.createElement(
                             "span",
@@ -176,7 +176,7 @@ var PDFReader = function (_Component) {
                             _react2.default.createElement(
                                 "strong",
                                 { className: "count-page" },
-                                _react2.default.createElement(_Button2.default, _extends({}, btnUp, { onClick: function onClick() {
+                                _react2.default.createElement(_Button2.default, _extends({}, btnUp, { clickHandler: function clickHandler() {
                                         return _this3.scrollToPage(currentPage - 1);
                                     } })),
                                 currentPage + 1,
@@ -184,7 +184,7 @@ var PDFReader = function (_Component) {
                                 pageCountLabel,
                                 " ",
                                 pages.length || 0,
-                                _react2.default.createElement(_Button2.default, _extends({}, btnDown, { onClick: function onClick() {
+                                _react2.default.createElement(_Button2.default, _extends({}, btnDown, { clickHandler: function clickHandler() {
                                         return _this3.scrollToPage(currentPage + 1);
                                     } }))
                             )

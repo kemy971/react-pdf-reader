@@ -125,14 +125,14 @@ class PDFReader extends Component {
                             <Button {...btnToggle} clickHandler={this.toggleThumbnailsView}/>
                             </div>
                             <div className="zoom-actions">
-                                <Button {...btnZoomIn} onClick={this.zoomIn} />
-                                <Button {...btnZoomOut} onClick={this.zoomOut} />
+                                <Button {...btnZoomIn} clickHandler={this.zoomIn} />
+                                <Button {...btnZoomOut} clickHandler={this.zoomOut} />
                             </div>
                             <span>
                                 <strong className="count-page">
-                                    <Button {...btnUp} onClick={() => this.scrollToPage(currentPage - 1)} />
+                                    <Button {...btnUp} clickHandler={() => this.scrollToPage(currentPage - 1)} />
                                     {currentPage + 1} {pageCountLabel} {pages.length || 0}
-                                    <Button {...btnDown} onClick={() => this.scrollToPage(currentPage + 1)} />
+                                    <Button {...btnDown} clickHandler={() => this.scrollToPage(currentPage + 1)} />
                                 </strong>
                             </span>
                         </div>
