@@ -6,6 +6,7 @@ import "pdfjs-dist/webpack"
 import "pdfjs-dist/web/compatibility"
 import Viewer from './Viewer'
 import ThumbnailViewer from './ThumbnailViewer'
+import Button from './Button'
 
 const PDFJS = window.PDFJS;
 
@@ -106,13 +107,14 @@ class PDFReader extends Component {
 
     render() {
         const {pages, isLoading, pageLoading, currentPage, scale, thumbnailsViewOpen} = this.state;
-        const {width, rotate} = this.props;
+        const {width, rotate, btnToggle, btnUp, btnDown, btnZoomIn, btnZoomOut, loadingLabel, pageCountLabel} = this.props;
+        console.log(btnToggle)
         return (
             <div className={classnames("pdf-reader", {"tumbnails-open": thumbnailsViewOpen})}>
                 {
                     isLoading ?
                         <div className="pdf-loading">
-                            <h3>PDF Document Loading ...</h3>
+                            <h3>{loadingLabel}</h3>
                         </div>
                         : null
                 }
@@ -120,19 +122,17 @@ class PDFReader extends Component {
                     <div>
                         <div className="pdf-reader-header">
                             <div className="toggle-sidebar">
-                                <button onClick={this.toggleThumbnailsView}>Toggle
-                                    Thumbnails
-                                </button>
+                            <Button {...btnToggle} clickHandler={this.toggleThumbnailsView}/>
                             </div>
                             <div className="zoom-actions">
-                                <button onClick={this.zoomIn}>Zoom +</button>
-                                <button onClick={this.zoomOut}>Zoom -</button>
+                                <Button {...btnZoomIn} onClick={this.zoomIn} />
+                                <Button {...btnZoomOut} onClick={this.zoomOut} />
                             </div>
                             <span>
                                 <strong className="count-page">
-                                    <button onClick={() => this.scrollToPage(currentPage - 1)}>up</button>
-                                    {currentPage + 1} sur {pages.length || 0}
-                                    <button onClick={() => this.scrollToPage(currentPage + 1)}>down</button>
+                                    <Button {...btnUp} onClick={() => this.scrollToPage(currentPage - 1)} />
+                                    {currentPage + 1} {pageCountLabel} {pages.length || 0}
+                                    <Button {...btnDown} onClick={() => this.scrollToPage(currentPage + 1)} />
                                 </strong>
                             </span>
                         </div>
@@ -151,14 +151,59 @@ class PDFReader extends Component {
 PDFReader.defaultProps = {
     rotate: 0,
     scale: 1,
-    currentPage: 0
+    currentPage: 0,
+    btnToggle: {
+        label: "toggle thumbnails"
+    },
+    btnUp: {
+        label: "Up"
+    },
+    btnDown: {
+        label: "Down"
+    },
+    btnZoomIn: {
+        label: "Zoom In"
+    },
+    btnZoomOut: {
+        label: "Zoom Out"
+    },
+    loadingLabel: "PDF Document Loading ...",
+    pageCountLabel: "in"
 };
 
 PDFReader.propTypes = {
     file: PropTypes.string,
     rotate: PropTypes.number,
     scale: PropTypes.number,
-    width: PropTypes.number
+    width: PropTypes.number,
+    btnToggle: PropTypes.shape({
+        label: PropTypes.string,
+        classname: PropTypes.string,
+        iconClassname: PropTypes.string,
+    }),
+    btnUp: PropTypes.shape({
+        label: PropTypes.string,
+        classname: PropTypes.string,
+        iconClassname: PropTypes.string,
+    }),
+    btnDown: PropTypes.shape({
+        label: PropTypes.string,
+        classname: PropTypes.string,
+        iconClassname: PropTypes.string,
+    }),
+    btnZoomIn: PropTypes.shape({
+        label: PropTypes.string,
+        classname: PropTypes.string,
+        iconClassname: PropTypes.string,
+    }),
+    btnZoomOut: PropTypes.shape({
+        label: PropTypes.string,
+        classname: PropTypes.string,
+        iconClassname: PropTypes.string,
+    }),
+    loadingLabel: PropTypes.string,
+    pageCountLabel: PropTypes.string
+
 };
 
 export default PDFReader;

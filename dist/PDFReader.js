@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require("react");
@@ -33,6 +35,10 @@ var _Viewer2 = _interopRequireDefault(_Viewer);
 var _ThumbnailViewer = require("./ThumbnailViewer");
 
 var _ThumbnailViewer2 = _interopRequireDefault(_ThumbnailViewer);
+
+var _Button = require("./Button");
+
+var _Button2 = _interopRequireDefault(_Button);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -125,8 +131,16 @@ var PDFReader = function (_Component) {
                 thumbnailsViewOpen = _state2.thumbnailsViewOpen;
             var _props = this.props,
                 width = _props.width,
-                rotate = _props.rotate;
+                rotate = _props.rotate,
+                btnToggle = _props.btnToggle,
+                btnUp = _props.btnUp,
+                btnDown = _props.btnDown,
+                btnZoomIn = _props.btnZoomIn,
+                btnZoomOut = _props.btnZoomOut,
+                loadingLabel = _props.loadingLabel,
+                pageCountLabel = _props.pageCountLabel;
 
+            console.log(btnToggle);
             return _react2.default.createElement(
                 "div",
                 { className: (0, _classnames2.default)("pdf-reader", { "tumbnails-open": thumbnailsViewOpen }) },
@@ -136,7 +150,7 @@ var PDFReader = function (_Component) {
                     _react2.default.createElement(
                         "h3",
                         null,
-                        "PDF Document Loading ..."
+                        loadingLabel
                     )
                 ) : null,
                 !pageLoading ? _react2.default.createElement(
@@ -148,25 +162,13 @@ var PDFReader = function (_Component) {
                         _react2.default.createElement(
                             "div",
                             { className: "toggle-sidebar" },
-                            _react2.default.createElement(
-                                "button",
-                                { onClick: this.toggleThumbnailsView },
-                                "Toggle Thumbnails"
-                            )
+                            _react2.default.createElement(_Button2.default, _extends({}, btnToggle, { clickHandler: this.toggleThumbnailsView }))
                         ),
                         _react2.default.createElement(
                             "div",
                             { className: "zoom-actions" },
-                            _react2.default.createElement(
-                                "button",
-                                { onClick: this.zoomIn },
-                                "Zoom +"
-                            ),
-                            _react2.default.createElement(
-                                "button",
-                                { onClick: this.zoomOut },
-                                "Zoom -"
-                            )
+                            _react2.default.createElement(_Button2.default, _extends({}, btnZoomIn, { onClick: this.zoomIn })),
+                            _react2.default.createElement(_Button2.default, _extends({}, btnZoomOut, { onClick: this.zoomOut }))
                         ),
                         _react2.default.createElement(
                             "span",
@@ -174,23 +176,17 @@ var PDFReader = function (_Component) {
                             _react2.default.createElement(
                                 "strong",
                                 { className: "count-page" },
-                                _react2.default.createElement(
-                                    "button",
-                                    { onClick: function onClick() {
-                                            return _this3.scrollToPage(currentPage - 1);
-                                        } },
-                                    "up"
-                                ),
+                                _react2.default.createElement(_Button2.default, _extends({}, btnUp, { onClick: function onClick() {
+                                        return _this3.scrollToPage(currentPage - 1);
+                                    } })),
                                 currentPage + 1,
-                                " sur ",
+                                " ",
+                                pageCountLabel,
+                                " ",
                                 pages.length || 0,
-                                _react2.default.createElement(
-                                    "button",
-                                    { onClick: function onClick() {
-                                            return _this3.scrollToPage(currentPage + 1);
-                                        } },
-                                    "down"
-                                )
+                                _react2.default.createElement(_Button2.default, _extends({}, btnDown, { onClick: function onClick() {
+                                        return _this3.scrollToPage(currentPage + 1);
+                                    } }))
                             )
                         )
                     ),
@@ -266,14 +262,59 @@ var _initialiseProps = function _initialiseProps() {
 PDFReader.defaultProps = {
     rotate: 0,
     scale: 1,
-    currentPage: 0
+    currentPage: 0,
+    btnToggle: {
+        label: "toggle thumbnails"
+    },
+    btnUp: {
+        label: "Up"
+    },
+    btnDown: {
+        label: "Down"
+    },
+    btnZoomIn: {
+        label: "Zoom In"
+    },
+    btnZoomOut: {
+        label: "Zoom Out"
+    },
+    loadingLabel: "PDF Document Loading ...",
+    pageCountLabel: "in"
 };
 
 PDFReader.propTypes = {
     file: _propTypes2.default.string,
     rotate: _propTypes2.default.number,
     scale: _propTypes2.default.number,
-    width: _propTypes2.default.number
+    width: _propTypes2.default.number,
+    btnToggle: _propTypes2.default.shape({
+        label: _propTypes2.default.string,
+        classname: _propTypes2.default.string,
+        iconClassname: _propTypes2.default.string
+    }),
+    btnUp: _propTypes2.default.shape({
+        label: _propTypes2.default.string,
+        classname: _propTypes2.default.string,
+        iconClassname: _propTypes2.default.string
+    }),
+    btnDown: _propTypes2.default.shape({
+        label: _propTypes2.default.string,
+        classname: _propTypes2.default.string,
+        iconClassname: _propTypes2.default.string
+    }),
+    btnZoomIn: _propTypes2.default.shape({
+        label: _propTypes2.default.string,
+        classname: _propTypes2.default.string,
+        iconClassname: _propTypes2.default.string
+    }),
+    btnZoomOut: _propTypes2.default.shape({
+        label: _propTypes2.default.string,
+        classname: _propTypes2.default.string,
+        iconClassname: _propTypes2.default.string
+    }),
+    loadingLabel: _propTypes2.default.string,
+    pageCountLabel: _propTypes2.default.string
+
 };
 
 exports.default = PDFReader;
