@@ -49,7 +49,7 @@ class Page extends Component {
             element: this._page,
             handler: direction => {
                 if (direction === "down") {
-                    onVisibleOnViewport(page.pageIndex + 1);
+                    onVisibleOnViewport(page.pageIndex);
                 }
             }
         }),
@@ -59,7 +59,7 @@ class Page extends Component {
             element: this._page,
             handler: direction => {
                 if (direction === "up") {
-                    onVisibleOnViewport(page.pageIndex + 1);
+                    onVisibleOnViewport(page.pageIndex);
                 }
             }
         }),

@@ -75,7 +75,7 @@ class ThumbnailViewer extends Component {
                 {
                     !isLoading ?
                         this.thumbnails.map(({pageIndex, src}) => <Thumbnail src={src} pageIndex={pageIndex}
-                                                                             isCurrentPage={currentPage === pageIndex + 1}
+                                                                             isCurrentPage={currentPage === pageIndex}
                                                                              onSelect={() => onSelect(pageIndex)}/>)
                         : null}
             </section>
