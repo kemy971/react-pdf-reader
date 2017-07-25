@@ -1,6 +1,7 @@
 {
   "name": "react-pdf-reader",
   "version": "0.1.0",
+  "main": "dist/PDFReader.js",
   "dependencies": {
     "classnames": "^2.2.5",
     "pdfjs-dist": "^1.8.559",
@@ -11,6 +12,12 @@
     "waypoints": "^4.0.1"
   },
   "devDependencies": {
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2016": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
     "node-sass-chokidar": "^0.0.3",
     "npm-run-all": "^4.0.2",
     "react-scripts": "1.0.10"
@@ -18,7 +25,7 @@
   "scripts": {
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
-    "build": "npm run build-css && react-scripts build",
+    "build": "babel src/components/ -d dist/ build",
     "build-css": "node-sass-chokidar src/sass/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/sass/ -o src/ --watch --recursive",
     "test": "react-scripts test --env=jsdom",

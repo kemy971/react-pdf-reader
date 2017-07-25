@@ -116,7 +116,7 @@ class PDFReader extends Component {
                 }
                 {!pageLoading ?
                     <div>
-                        <header>
+                        <div className="pdf-reader-header">
                             <div className="toggle-sidebar">
                                 <button onClick={this.toggleThumbnailsView}>Toggle
                                     Thumbnails
@@ -133,7 +133,7 @@ class PDFReader extends Component {
                                     <button onClick={() => this.scrollToPage(currentPage + 1)}>down</button>
                                 </strong>
                             </span>
-                        </header>
+                        </div>
                         <ThumbnailViewer pages={pages} currentPage={currentPage} onSelect={this.scrollToPage}
                                          onLoaded={this.viewLoaded}/>
                         <Viewer pages={pages} onPageChange={this.changePage} scale={scale} rotate={rotate}

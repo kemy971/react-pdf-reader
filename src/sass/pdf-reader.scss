@@ -12,7 +12,7 @@ body {
   &.tumbnails-open {
     padding-left: 200px;
 
-    header {
+    .pdf-reader-header {
       left: 200px;
     }
 
@@ -20,7 +20,7 @@ body {
       margin-left: 0;
     }
   }
-  header {
+  .pdf-reader-header {
     transition: all .3s ease;
     position: fixed;
     top: 0;
