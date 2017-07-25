@@ -88,7 +88,9 @@ class PDFReader extends Component {
 
     scrollToPage = (pageIndex) => {
         let page = document.getElementById(`pdf-page-${pageIndex}`);
+        let context = document.querySelector('.pdf-viewer');
         Velocity(page, 'scroll', {
+            container: context,
             duration: 300,
             queue: false
         });
