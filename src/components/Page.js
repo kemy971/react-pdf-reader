@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import "pdfjs-dist/webpack";
 import "pdfjs-dist/web/compatibility";
 import "waypoints/lib/noframework.waypoints.js";
-import {TextLayerBuilder} from "../plugin/TextLayerBuilder";
+import {TextLayerBuilder} from "./plugin/TextLayerBuilder";
 
 let PDFJS = window.PDFJS;
 let Waypoint = window.Waypoint;

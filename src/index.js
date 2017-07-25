@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './pdf-reader.css';
-import './plugin/TextLayerBuilder.css'
+import './components/plugin/TextLayerBuilder.css'
 import PDFReader from './components/PDFReader';
 
 ReactDOM.render( <PDFReader 

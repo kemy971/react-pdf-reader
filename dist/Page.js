@@ -16,7 +16,7 @@ require("pdfjs-dist/web/compatibility");
 
 require("waypoints/lib/noframework.waypoints.js");
 
-var _TextLayerBuilder = require("../plugin/TextLayerBuilder");
+var _TextLayerBuilder = require("./plugin/TextLayerBuilder");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
