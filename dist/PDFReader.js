@@ -290,27 +290,32 @@ PDFReader.propTypes = {
     btnToggle: _propTypes2.default.shape({
         label: _propTypes2.default.string,
         classname: _propTypes2.default.string,
-        iconClassname: _propTypes2.default.string
+        iconClassname: _propTypes2.default.string,
+        iconButton: _propTypes2.default.bool
     }),
     btnUp: _propTypes2.default.shape({
         label: _propTypes2.default.string,
         classname: _propTypes2.default.string,
-        iconClassname: _propTypes2.default.string
+        iconClassname: _propTypes2.default.string,
+        iconButton: _propTypes2.default.bool
     }),
     btnDown: _propTypes2.default.shape({
         label: _propTypes2.default.string,
         classname: _propTypes2.default.string,
-        iconClassname: _propTypes2.default.string
+        iconClassname: _propTypes2.default.string,
+        iconButton: _propTypes2.default.bool
     }),
     btnZoomIn: _propTypes2.default.shape({
         label: _propTypes2.default.string,
         classname: _propTypes2.default.string,
-        iconClassname: _propTypes2.default.string
+        iconClassname: _propTypes2.default.string,
+        iconButton: _propTypes2.default.bool
     }),
     btnZoomOut: _propTypes2.default.shape({
         label: _propTypes2.default.string,
         classname: _propTypes2.default.string,
-        iconClassname: _propTypes2.default.string
+        iconClassname: _propTypes2.default.string,
+        iconButton: _propTypes2.default.bool
     }),
     loadingLabel: _propTypes2.default.string,
     pageCountLabel: _propTypes2.default.string

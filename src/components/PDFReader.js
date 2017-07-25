@@ -180,26 +180,31 @@ PDFReader.propTypes = {
         label: PropTypes.string,
         classname: PropTypes.string,
         iconClassname: PropTypes.string,
+        iconButton: PropTypes.bool
     }),
     btnUp: PropTypes.shape({
         label: PropTypes.string,
         classname: PropTypes.string,
         iconClassname: PropTypes.string,
+        iconButton: PropTypes.bool
     }),
     btnDown: PropTypes.shape({
         label: PropTypes.string,
         classname: PropTypes.string,
         iconClassname: PropTypes.string,
+        iconButton: PropTypes.bool
     }),
     btnZoomIn: PropTypes.shape({
         label: PropTypes.string,
         classname: PropTypes.string,
         iconClassname: PropTypes.string,
+        iconButton: PropTypes.bool
     }),
     btnZoomOut: PropTypes.shape({
         label: PropTypes.string,
         classname: PropTypes.string,
         iconClassname: PropTypes.string,
+        iconButton: PropTypes.bool
     }),
     loadingLabel: PropTypes.string,
     pageCountLabel: PropTypes.string

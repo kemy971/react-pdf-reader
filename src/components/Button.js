@@ -1,9 +1,12 @@
 import React from 'react'
 
-const Button = ({label = "", classname = "", iconClassname = null, clickHandler}) => {
-    return (<button className={classname} onClick={clickHandler}>
-        {label}
-        </button>);
+const Button = ({label = "", classname = "", iconClassname = null, clickHandler, iconButton = false}) => {
+    return (
+        <button className={classname} onClick={clickHandler}>
+            {iconClassname ? <i className={iconClassname}/> : null}
+            {!iconButton ? label : null}
+        </button>
+    );
 }
 
 export default Button

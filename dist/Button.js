@@ -17,12 +17,15 @@ var Button = function Button(_ref) {
         classname = _ref$classname === undefined ? "" : _ref$classname,
         _ref$iconClassname = _ref.iconClassname,
         iconClassname = _ref$iconClassname === undefined ? null : _ref$iconClassname,
-        clickHandler = _ref.clickHandler;
+        clickHandler = _ref.clickHandler,
+        _ref$iconButton = _ref.iconButton,
+        iconButton = _ref$iconButton === undefined ? false : _ref$iconButton;
 
     return _react2.default.createElement(
         "button",
         { className: classname, onClick: clickHandler },
-        label
+        iconClassname ? _react2.default.createElement("i", { className: iconClassname }) : null,
+        !iconButton ? label : null
     );
 };
 
