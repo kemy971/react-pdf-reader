@@ -244,7 +244,9 @@ var _initialiseProps = function _initialiseProps() {
 
     this.scrollToPage = function (pageIndex) {
         var page = document.getElementById("pdf-page-" + pageIndex);
+        var context = document.querySelector('.pdf-viewer');
         (0, _velocityAnimate2.default)(page, 'scroll', {
+            container: context,
             duration: 300,
             queue: false
         });
