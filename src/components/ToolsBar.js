@@ -9,7 +9,6 @@ function elementWrapper(_element, _props) {
 
 class ToolsBar extends Component {
   getButton = (button, clickHandler) => {
-    console.log(button);
     return React.isValidElement(button)
       ? elementWrapper(button, { onClick: clickHandler })
       : <Button {...button} clickHandler={clickHandler} />;

@@ -45,7 +45,6 @@ var ToolsBar = function (_Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ToolsBar.__proto__ || Object.getPrototypeOf(ToolsBar)).call.apply(_ref, [this].concat(args))), _this), _this.getButton = function (button, clickHandler) {
-      console.log(button);
       return _react2.default.isValidElement(button) ? elementWrapper(button, { onClick: clickHandler }) : _react2.default.createElement(_Button2.default, _extends({}, button, { clickHandler: clickHandler }));
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
