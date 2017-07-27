@@ -76,11 +76,11 @@ var ToolsBar = function (_Component) {
         _react2.default.createElement(
           "div",
           { className: "zoom-actions" },
-          this.getButton(btnZoomIn, function () {
-            return zoomHandler("in");
-          }),
           this.getButton(btnZoomOut, function () {
             return zoomHandler("out");
+          }),
+          this.getButton(btnZoomIn, function () {
+            return zoomHandler("in");
           })
         ),
         _react2.default.createElement(
