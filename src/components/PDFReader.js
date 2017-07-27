@@ -6,7 +6,7 @@ import "pdfjs-dist/webpack";
 import "pdfjs-dist/web/compatibility";
 import Viewer from "./Viewer";
 import ThumbnailViewer from "./ThumbnailViewer";
-import ToolsBar from "./ToolsBar";
+import ToolsBar from './ToolsBar';
 
 const PDFJS = window.PDFJS;
 
@@ -16,7 +16,6 @@ class PDFReader extends Component {
     const { scale, currentPage } = props;
     this.state = {
       pdf: {},
-      pageLoading: true,
       isLoading: true,
       currentPage: currentPage,
       scale: scale,
@@ -66,23 +65,20 @@ class PDFReader extends Component {
     }
 
     Promise.all(pagesPromises).then(pages => {
-      this.setState({ pages: pages, pageLoading: false });
+      this.setState({ pages: pages, isLoading: false });
     });
   }
 
-  viewLoaded = () => {
-    this.setState({ isLoading: false });
-  };
-
-  zoom = direction => {
+  zoom = (direction) => {
     let { scale } = this.state;
     if (direction === "in") {
-      this.setState({ scale: scale + 0.1 });
+        this.setState({ scale: scale + 0.1 });
     } else {
-      this.setState(_state => ({
-        scale: _state.scale - 0.1 > 0 ? _state.scale - 0.1 : 0
-      }));
+         this.setState(_state => ({
+      scale: _state.scale - 0.1 > 0 ? _state.scale - 0.1 : 0
+    }));
     }
+    
   };
 
   changePage = pageIndex => {
@@ -103,17 +99,14 @@ class PDFReader extends Component {
     this.props.onViewLoadComplete();
   };
 
-  toggleThumbnailsView = () => {
-    this.setState(_state => ({
-      thumbnailsViewOpen: !_state.thumbnailsViewOpen
-    }));
-  };
+      toggleThumbnailsView = () => {
+        this.setState(_state => ({thumbnailsViewOpen: !_state.thumbnailsViewOpen}))
+    };
 
   render() {
     const {
       pages,
       isLoading,
-      pageLoading,
       currentPage,
       scale,
       thumbnailsViewOpen
@@ -143,27 +136,24 @@ class PDFReader extends Component {
                 {loadingLabel}
               </h3>
             </div>
-          : null}
-        {!pageLoading
-          ? <div>
-              <ToolsBar
-                btnToggle={btnToggle}
-                toggleHandler={this.toggleThumbnailsView}
-                btnUp={btnUp}
-                btnDown={btnDown}
-                scrollToPageHandler={this.scrollToPage}
-                btnZoomIn={btnZoomIn}
-                btnZoomOut={btnZoomOut}
-                zoomHandler={this.zoom}
-                currentPage={currentPage}
-                numPages={pages.length}
-                pageCountLabel={pageCountLabel}
-              />
+          : <div>
+          <ToolsBar 
+            btnToggle={btnToggle}
+            toggleHandler={this.toggleThumbnailsView} 
+            btnUp={btnUp}
+            btnDown={btnDown}
+            scrollToPageHandler={this.scrollToPage}
+            btnZoomIn={btnZoomIn}
+            btnZoomOut={btnZoomOut}
+            zoomHandler={this.zoom}
+            currentPage={currentPage}
+            numPages={pages.length}
+            pageCountLabel={pageCountLabel}
+            />
               <ThumbnailViewer
                 pages={pages}
                 currentPage={currentPage}
                 onSelect={this.scrollToPage}
-                onLoaded={this.viewLoaded}
               />
               <Viewer
                 pages={pages}
@@ -172,8 +162,7 @@ class PDFReader extends Component {
                 rotate={rotate}
                 width={width}
               />
-            </div>
-          : null}
+            </div>}
       </div>
     );
   }
