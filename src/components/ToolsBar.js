@@ -34,8 +34,8 @@ class ToolsBar extends Component {
           {this.getButton(btnToggle, toggleHandler)}
         </div>
         <div className="zoom-actions">
-          {this.getButton(btnZoomIn, () => zoomHandler("in"))}
-          {this.getButton(btnZoomOut, () => zoomHandler("out"))}
+        {this.getButton(btnZoomOut, () => zoomHandler("out"))}
+        {this.getButton(btnZoomIn, () => zoomHandler("in"))}
         </div>
         <span>
           {this.getButton(btnUp, () => scrollToPageHandler(currentPage - 1))}

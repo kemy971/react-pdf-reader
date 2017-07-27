@@ -63,7 +63,6 @@ var PDFReader = function (_Component) {
 
     _this.state = {
       pdf: {},
-      pageLoading: true,
       isLoading: true,
       currentPage: currentPage,
       scale: scale,
@@ -112,7 +111,7 @@ var PDFReader = function (_Component) {
       }
 
       Promise.all(pagesPromises).then(function (pages) {
-        _this2.setState({ pages: pages, pageLoading: false });
+        _this2.setState({ pages: pages, isLoading: false });
       });
     }
   }, {
@@ -121,7 +120,6 @@ var PDFReader = function (_Component) {
       var _state2 = this.state,
           pages = _state2.pages,
           isLoading = _state2.isLoading,
-          pageLoading = _state2.pageLoading,
           currentPage = _state2.currentPage,
           scale = _state2.scale,
           thumbnailsViewOpen = _state2.thumbnailsViewOpen;
@@ -152,8 +150,7 @@ var PDFReader = function (_Component) {
             null,
             loadingLabel
           )
-        ) : null,
-        !pageLoading ? _react2.default.createElement(
+        ) : _react2.default.createElement(
           "div",
           null,
           _react2.default.createElement(_ToolsBar2.default, {
@@ -172,8 +169,7 @@ var PDFReader = function (_Component) {
           _react2.default.createElement(_ThumbnailViewer2.default, {
             pages: pages,
             currentPage: currentPage,
-            onSelect: this.scrollToPage,
-            onLoaded: this.viewLoaded
+            onSelect: this.scrollToPage
           }),
           _react2.default.createElement(_Viewer2.default, {
             pages: pages,
@@ -182,7 +178,7 @@ var PDFReader = function (_Component) {
             rotate: rotate,
             width: width
           })
-        ) : null
+        )
       );
     }
   }]);
@@ -204,10 +200,6 @@ var _initialiseProps = function _initialiseProps() {
     _this3.setState({
       pdf: false
     });
-  };
-
-  this.viewLoaded = function () {
-    _this3.setState({ isLoading: false });
   };
 
   this.zoom = function (direction) {
@@ -244,9 +236,7 @@ var _initialiseProps = function _initialiseProps() {
 
   this.toggleThumbnailsView = function () {
     _this3.setState(function (_state) {
-      return {
-        thumbnailsViewOpen: !_state.thumbnailsViewOpen
-      };
+      return { thumbnailsViewOpen: !_state.thumbnailsViewOpen };
     });
   };
 };
