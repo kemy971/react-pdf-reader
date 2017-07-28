@@ -210,7 +210,7 @@ var _initialiseProps = function _initialiseProps() {
     } else {
       _this3.setState(function (_state) {
         return {
-          scale: _state.scale - 0.1 > 0 ? _state.scale - 0.1 : 0
+          scale: _state.scale - 0.1 > 0.5 ? _state.scale - 0.1 : 0.5
         };
       });
     }
