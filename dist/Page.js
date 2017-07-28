@@ -100,7 +100,6 @@ var Page = function (_Component) {
         element: _this._page,
         context: context,
         enter: function enter() {
-          console.log("enter");
           _this.setState({ isInview: true }, function () {
             if (!_this.pageRendered) {
               _this.renderPage();
@@ -129,12 +128,13 @@ var Page = function (_Component) {
 
     _this.getViewport = function () {
       var page = _this.props.page;
+      var scale = _this.state.scale;
 
       var rotate = _this.props.rotate || 0;
       var pixelRatio = window.devicePixelRatio || 1;
-      var viewport = page.getViewport(_this.getPageScale(page) * pixelRatio, rotate);
+      var viewport = page.getViewport(scale * pixelRatio, rotate);
 
-      var viewportDefaultRatio = page.getViewport(_this.getPageScale(page), rotate);
+      var viewportDefaultRatio = page.getViewport(scale, rotate);
 
       return {
         viewport: viewport,
@@ -261,32 +261,13 @@ var Page = function (_Component) {
       }
     }
   }, {
-    key: "getPageScale",
-    value: function getPageScale(page) {
-      var _props = this.props,
-          rotate = _props.rotate,
-          width = _props.width;
-      var scale = this.props.scale;
-
-      // Be default, we'll render page at 100% * scale width.
-
-      var pageScale = 1;
-
-      // If width is defined, calculate the scale of the page so it could be of desired width.
-      if (width) {
-        pageScale = width / page.getViewport(scale, rotate).width;
-      }
-
-      return scale * pageScale;
-    }
-  }, {
     key: "render",
     value: function render() {
       var _this3 = this;
 
-      var _props2 = this.props,
-          page = _props2.page,
-          renderType = _props2.renderType;
+      var _props = this.props,
+          page = _props.page,
+          renderType = _props.renderType;
 
       return _react2.default.createElement(
         "div",

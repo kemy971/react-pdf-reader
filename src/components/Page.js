@@ -85,7 +85,6 @@ class Page extends Component {
         element: this._page,
         context: context,
         enter: () => {
-          console.log("enter")
           this.setState({isInview: true}, () => {
               if (!this.pageRendered){
                 this.renderPage();
@@ -114,32 +113,18 @@ class Page extends Component {
     this.initWaypoint(this.getViewport().viewportDefaultRatio.height);
   };
 
-  getPageScale(page) {
-    const { rotate, width } = this.props;
-    const {scale}  = this.props;
-
-    // Be default, we'll render page at 100% * scale width.
-    let pageScale = 1;
-
-    // If width is defined, calculate the scale of the page so it could be of desired width.
-    if (width) {
-      pageScale = width / page.getViewport(scale, rotate).width;
-    }
-
-    return scale * pageScale;
-  }
-
   getViewport = () => {
     const { page } = this.props;
+    const { scale } = this.state;
     const rotate = this.props.rotate || 0;
     const pixelRatio = window.devicePixelRatio || 1;
     let viewport = page.getViewport(
-      this.getPageScale(page) * pixelRatio,
+      scale * pixelRatio,
       rotate
     );
 
     let viewportDefaultRatio = page.getViewport(
-      this.getPageScale(page),
+      scale,
       rotate
     );
 
