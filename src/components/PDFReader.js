@@ -75,7 +75,7 @@ class PDFReader extends Component {
         this.setState({ scale: scale + 0.1 });
     } else {
          this.setState(_state => ({
-      scale: _state.scale - 0.1 > 0 ? _state.scale - 0.1 : 0
+      scale: _state.scale - 0.1 > 0.5 ? _state.scale - 0.1 : 0.5
     }));
     }
     

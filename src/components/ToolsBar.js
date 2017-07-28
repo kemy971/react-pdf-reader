@@ -40,7 +40,7 @@ class ToolsBar extends Component {
         <span>
           {this.getButton(btnUp, () => scrollToPageHandler(currentPage - 1))}
           <strong className="count-page">
-            {currentPage + 1} {pageCountLabel} {numPages || 0}
+          {currentPage + 1} {pageCountLabel} {numPages || 0}
           </strong>
           {this.getButton(btnDown, () => scrollToPageHandler(currentPage + 1))}
         </span>
