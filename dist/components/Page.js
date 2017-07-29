@@ -47,8 +47,6 @@ var Page = function (_Component) {
     };
 
     _this.initPage = function () {
-      var page = _this.props.page;
-
       var _this$getViewport = _this.getViewport(),
           viewport = _this$getViewport.viewport,
           viewportDefaultRatio = _this$getViewport.viewportDefaultRatio;

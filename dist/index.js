@@ -26,15 +26,15 @@ require("pdfjs-dist/webpack");
 
 require("pdfjs-dist/web/compatibility");
 
-var _Viewer = require("./Viewer");
+var _Viewer = require("./components/Viewer");
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _ThumbnailViewer = require("./ThumbnailViewer");
+var _ThumbnailViewer = require("./components/ThumbnailViewer");
 
 var _ThumbnailViewer2 = _interopRequireDefault(_ThumbnailViewer);
 
-var _ToolsBar = require("./ToolsBar");
+var _ToolsBar = require("./components/ToolsBar");
 
 var _ToolsBar2 = _interopRequireDefault(_ToolsBar);
 

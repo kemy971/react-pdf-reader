@@ -4,9 +4,9 @@ import Velocity from "velocity-animate";
 import classnames from "classnames";
 import "pdfjs-dist/webpack";
 import "pdfjs-dist/web/compatibility";
-import Viewer from "./Viewer";
-import ThumbnailViewer from "./ThumbnailViewer";
-import ToolsBar from './ToolsBar';
+import Viewer from "./components/Viewer";
+import ThumbnailViewer from "./components/ThumbnailViewer";
+import ToolsBar from './components/ToolsBar';
 
 const PDFJS = window.PDFJS;
 
