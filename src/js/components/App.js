@@ -56,6 +56,7 @@ class PDFReader extends Component {
     });
   };
 
+
   loadPages() {
     let { pdf } = this.state;
     let pagesPromises = [];

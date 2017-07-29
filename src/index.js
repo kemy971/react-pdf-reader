@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './pdf-reader.css';
-import './components/plugin/TextLayerBuilder.css'
-import PDFReader from './components/PDFReader';
+import './js/plugin/TextLayerBuilder.css'
+import PDFReader from './js/components/App.js';
 
 let ToggleBtn = <button>toggle panel</button>;
 

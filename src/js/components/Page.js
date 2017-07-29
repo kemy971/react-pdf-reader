@@ -3,8 +3,7 @@ import "pdfjs-dist/webpack";
 import "pdfjs-dist/web/compatibility";
 import "waypoints/lib/noframework.waypoints.js";
 import "waypoints/lib/shortcuts/inview.js";
-import { TextLayerBuilder } from "./plugin/TextLayerBuilder";
-import Viewer from "./Viewer";
+import { TextLayerBuilder } from "../plugin/TextLayerBuilder.js";
 
 let PDFJS = window.PDFJS;
 let Waypoint = window.Waypoint;
@@ -32,7 +31,7 @@ class Page extends Component {
     }
   }
 
-  updatePage = (scale = this.state.scale) => {
+  updatePage = () => {
     this.renderPagePlaceholder(this.getViewport().viewportDefaultRatio);
     this.resetWaypoint();
     this.cleanPage();
@@ -40,7 +39,6 @@ class Page extends Component {
   }
 
   initPage = () => {
-    const { page } = this.props;
     const { viewport, viewportDefaultRatio } = this.getViewport();
     this.renderPagePlaceholder(viewportDefaultRatio);
     this.initWaypoint(viewport.height);

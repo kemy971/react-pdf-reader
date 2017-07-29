@@ -25,7 +25,7 @@
   "scripts": {
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
-    "build": "babel src/components/ -d dist/ build",
+    "build": "babel src/js/ -d dist/",
     "build-css": "node-sass-chokidar src/sass/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/sass/ -o src/ --watch --recursive",
     "test": "react-scripts test --env=jsdom",

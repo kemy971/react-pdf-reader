@@ -18,11 +18,7 @@ require("waypoints/lib/noframework.waypoints.js");
 
 require("waypoints/lib/shortcuts/inview.js");
 
-var _TextLayerBuilder = require("./plugin/TextLayerBuilder");
-
-var _Viewer = require("./Viewer");
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
+var _TextLayerBuilder = require("../plugin/TextLayerBuilder.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44,8 +40,6 @@ var Page = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 
     _this.updatePage = function () {
-      var scale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.state.scale;
-
       _this.renderPagePlaceholder(_this.getViewport().viewportDefaultRatio);
       _this.resetWaypoint();
       _this.cleanPage();
