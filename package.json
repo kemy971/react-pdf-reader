@@ -1,7 +1,8 @@
 {
   "name": "react-pdf-reader",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "dist/index.js",
+  "repository": "https://github.com/kemy971/react-pdf-reader",
   "dependencies": {
     "classnames": "^2.2.5",
     "pdfjs-dist": "^1.8.559",
