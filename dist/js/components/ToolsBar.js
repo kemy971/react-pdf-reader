@@ -80,6 +80,7 @@ var ToolsBar = function (_Component) {
           btnZoomOut = _props2.btnZoomOut,
           btnUp = _props2.btnUp,
           btnDown = _props2.btnDown,
+          btnFitWidth = _props2.btnFitWidth,
           scrollToPageHandler = _props2.scrollToPageHandler,
           zoomHandler = _props2.zoomHandler,
           toggleHandler = _props2.toggleHandler,
@@ -104,6 +105,9 @@ var ToolsBar = function (_Component) {
           }),
           this.getButton(btnZoomIn, function () {
             return zoomHandler("in");
+          }),
+          this.getButton(btnFitWidth, function () {
+            return zoomHandler("fitWidth");
           })
         ),
         _react2.default.createElement(

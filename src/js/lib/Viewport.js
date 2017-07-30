@@ -22,3 +22,17 @@ export const getViewport = (page, scale = 1, rotate = 0) => {
       viewportDefaultRatio
     };
   };
+
+  export const getMinZoomScale = (page, container) => {
+    let {viewportDefaultRatio} = getViewport(page);
+    let containerHeight = container.offsetHeight * .9;
+    let pageHeight = viewportDefaultRatio.height;
+    return containerHeight / pageHeight;
+  }
+
+  export const getFitWidthScale = (page, container) => {
+    let {viewportDefaultRatio} = getViewport(page);
+    let containerWidth = container.offsetWidth * .9;
+    let pageWidth = viewportDefaultRatio.width;
+    return containerWidth / pageWidth;
+  }
