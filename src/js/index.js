@@ -91,7 +91,7 @@ class PDFReader extends Component {
     let context = document.querySelector(".pdf-viewer");
     Velocity(page, "scroll", {
       container: context,
-      duration: 300,
+      duration: 0,
       queue: false
     });
   };
