@@ -1,4 +1,6 @@
 # React PDF Reader
+[![npm version](https://badge.fury.io/js/react-pdf-reader.svg)](https://badge.fury.io/js/react-pdf-reader)
+
 A React component to read PDF Document.
 
 ## Installation
