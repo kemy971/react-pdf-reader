@@ -122,7 +122,8 @@ class PDFReader extends Component {
       btnZoomIn,
       btnZoomOut,
       loadingLabel,
-      pageCountLabel
+      pageCountLabel,
+      renderType
     } = this.props;
 
     return (
@@ -162,6 +163,7 @@ class PDFReader extends Component {
                 scale={scale}
                 rotate={rotate}
                 width={width}
+                renderType={renderType}
               />
             </div>}
       </div>
@@ -172,6 +174,7 @@ class PDFReader extends Component {
 PDFReader.defaultProps = {
   rotate: 0,
   scale: 1,
+  renderType: "svg",
   currentPage: 0,
   btnToggle: {
     label: "toggle thumbnails"
@@ -195,7 +198,11 @@ PDFReader.defaultProps = {
 PDFReader.propTypes = {
   file: PropTypes.string,
   rotate: PropTypes.number,
-  scale: PropTypes.number,
+  renderType: PropTypes.string,
+  scale: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
   width: PropTypes.number,
   btnToggle: PropTypes.oneOfType([
     PropTypes.shape({

@@ -3,6 +3,7 @@ import "pdfjs-dist/webpack";
 import "pdfjs-dist/web/compatibility";
 import "waypoints/lib/noframework.waypoints.js";
 import "waypoints/lib/shortcuts/inview.js";
+import { getViewport } from '../lib/Viewport'
 import { TextLayerBuilder } from "../plugin/TextLayerBuilder.js";
 
 let PDFJS = window.PDFJS;
@@ -115,21 +116,8 @@ class Page extends Component {
     const { page } = this.props;
     const { scale } = this.state;
     const rotate = this.props.rotate || 0;
-    const pixelRatio = window.devicePixelRatio || 1;
-    let viewport = page.getViewport(
-      scale * pixelRatio,
-      rotate
-    );
-
-    let viewportDefaultRatio = page.getViewport(
-      scale,
-      rotate
-    );
-
-    return {
-      viewport,
-      viewportDefaultRatio
-    };
+    
+    return getViewport(page, scale, rotate);
   };
 
   renderPage = () => {
