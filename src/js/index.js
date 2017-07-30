@@ -4,6 +4,7 @@ import Velocity from "velocity-animate";
 import classnames from "classnames";
 import "pdfjs-dist/webpack";
 import "pdfjs-dist/web/compatibility";
+import {getMinZoomScale, getFitWidthScale} from './lib/Viewport'
 import Viewer from "./components/Viewer";
 import ThumbnailViewer from "./components/ThumbnailViewer";
 import ToolsBar from './components/ToolsBar';
@@ -16,6 +17,7 @@ class PDFReader extends Component {
     const { scale, currentPage } = props;
     this.state = {
       pdf: {},
+      pages: [],
       isLoading: true,
       currentPage: currentPage,
       scale: scale,
@@ -44,7 +46,7 @@ class PDFReader extends Component {
     this.setState({
       pdf
     });
-    this.loadPages();
+    this.loadFirstPage();
   };
 
   /**
@@ -56,30 +58,50 @@ class PDFReader extends Component {
     });
   };
 
-
-  loadPages() {
+  loadFirstPage = () => {
     let { pdf } = this.state;
-    let pagesPromises = [];
 
-    for (let i = 1; i <= pdf.numPages; i++) {
+    pdf.getPage(1)
+    .then( page => {
+      this.setState(_state => ({pages: [..._state.pages,page], isLoading: false}),() => {
+        this.loadPages()
+      })
+    })
+  }
+
+
+  loadPages = () => {
+    let { pdf, pages } = this.state;
+    let pagesPromises = [];
+    console.log(pages)
+
+    for (let i = 2; i <= pdf.numPages; i++) {
       pagesPromises.push(pdf.getPage(i));
     }
 
     Promise.all(pagesPromises).then(pages => {
-      this.setState({ pages: pages, isLoading: false });
+      this.setState(_state => ({ pages: [..._state.pages,...pages], isLoading: false }));
     });
   }
 
   zoom = (direction) => {
-    let { scale } = this.state;
-    if (direction === "in") {
+    let { scale , pages} = this.state;
+    let container = document.querySelector(".pdf-viewer");
+    this.minZoomScale = getMinZoomScale(pages[0],container);
+
+    switch(direction){
+      case "in":
         this.setState({ scale: scale + 0.1 });
-    } else {
-         this.setState(_state => ({
-      scale: _state.scale - 0.1 > 0.5 ? _state.scale - 0.1 : 0.5
-    }));
+        break;
+      case "out":
+        this.setState(_state => ({
+          scale: _state.scale - 0.1 > this.minZoomScale ? _state.scale - 0.1 : this.minZoomScale
+        }));
+        break;
+      case "fitWidth":
+        this.setState({scale: getFitWidthScale(pages[0], container)});
+        break;
     }
-    
   };
 
   changePage = pageIndex => {
@@ -121,6 +143,7 @@ class PDFReader extends Component {
       btnDown,
       btnZoomIn,
       btnZoomOut,
+      btnFitWidth,
       loadingLabel,
       pageCountLabel,
       renderType
@@ -147,6 +170,7 @@ class PDFReader extends Component {
             scrollToPageHandler={this.scrollToPage}
             btnZoomIn={btnZoomIn}
             btnZoomOut={btnZoomOut}
+            btnFitWidth={btnFitWidth}
             zoomHandler={this.zoom}
             currentPage={currentPage}
             numPages={pages.length}
@@ -190,6 +214,9 @@ PDFReader.defaultProps = {
   },
   btnZoomOut: {
     label: "Zoom Out"
+  },
+  btnFitWidth: {
+    label: "Fit Width"
   },
   loadingLabel: "PDF Document Loading ...",
   pageCountLabel: "in"
@@ -241,6 +268,15 @@ PDFReader.propTypes = {
     PropTypes.element
   ]),
   btnZoomOut: PropTypes.oneOfType([
+    PropTypes.shape({
+      label: PropTypes.string,
+      classname: PropTypes.string,
+      iconClassname: PropTypes.string,
+      iconButton: PropTypes.bool
+    }),
+    PropTypes.element
+  ]),
+  btnFitWidth: PropTypes.oneOfType([
     PropTypes.shape({
       label: PropTypes.string,
       classname: PropTypes.string,
