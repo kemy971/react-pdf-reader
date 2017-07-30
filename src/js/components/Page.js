@@ -34,9 +34,13 @@ class Page extends Component {
 
   updatePage = () => {
     this.renderPagePlaceholder(this.getViewport().viewportDefaultRatio);
-    this.resetWaypoint();
+    this.refreshWaypoints();
     this.cleanPage();
-    this.setState({scaleChange: true});
+    if(this.state.isInview){
+      this.renderPage();
+    } else {
+      this.setState({scaleChange: true});
+    }
   }
 
   initPage = () => {
@@ -102,15 +106,9 @@ class Page extends Component {
     ];
   };
 
-  resetWaypoint = () => {
-    this.waypoints.forEach(waypoint => {
-      waypoint.destroy();
-    });
-
-    this.waypoints = null;
-
-    this.initWaypoint(this.getViewport().viewportDefaultRatio.height);
-  };
+  refreshWaypoints = () => {
+    Waypoint.refreshAll();
+  }
 
   getViewport = () => {
     const { page } = this.props;
