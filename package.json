@@ -1,7 +1,7 @@
 {
   "name": "react-pdf-reader",
-  "version": "0.1.2",
-  "main": "dist/index.js",
+  "version": "0.1.4",
+  "main": "dist/js/index.js",
   "repository": "https://github.com/kemy971/react-pdf-reader",
   "dependencies": {
     "classnames": "^2.2.5",
@@ -26,7 +26,7 @@
   "scripts": {
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
-    "build": "babel src/js/ -d dist/",
+    "build": "babel src/ -d dist/ --copy-files --ignore src/index.js",
     "build-css": "node-sass-chokidar src/sass/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/sass/ -o src/ --watch --recursive",
     "test": "react-scripts test --env=jsdom",

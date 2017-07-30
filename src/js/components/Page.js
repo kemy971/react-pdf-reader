@@ -4,7 +4,7 @@ import "pdfjs-dist/web/compatibility";
 import "waypoints/lib/noframework.waypoints.js";
 import "waypoints/lib/shortcuts/inview.js";
 import { getViewport } from '../lib/Viewport'
-import { TextLayerBuilder } from "../plugin/TextLayerBuilder.js";
+import { TextLayerBuilder } from "../lib/TextLayerBuilder.js";
 
 let PDFJS = window.PDFJS;
 let Waypoint = window.Waypoint;

@@ -33,23 +33,44 @@ function elementWrapper(_element, _props) {
 var ToolsBar = function (_Component) {
   _inherits(ToolsBar, _Component);
 
-  function ToolsBar() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
+  function ToolsBar(props) {
     _classCallCheck(this, ToolsBar);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = _possibleConstructorReturn(this, (ToolsBar.__proto__ || Object.getPrototypeOf(ToolsBar)).call(this, props));
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ToolsBar.__proto__ || Object.getPrototypeOf(ToolsBar)).call.apply(_ref, [this].concat(args))), _this), _this.getButton = function (button, clickHandler) {
+    _this.getButton = function (button, clickHandler) {
       return _react2.default.isValidElement(button) ? elementWrapper(button, { onClick: clickHandler }) : _react2.default.createElement(_Button2.default, _extends({}, button, { clickHandler: clickHandler }));
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    _this._handleChange = function (e) {
+      var numPages = _this.props.numPages;
+
+      var value = e.target.value;
+      if (value > 0 && value <= numPages) {
+        _this.setState({ inputPage: e.target.value });
+      }
+    };
+
+    _this._handleKeyPress = function (e) {
+      if (e.key === 'Enter') {
+        e.target.blur();
+      }
+    };
+
+    _this.state = {
+      inputPage: props.currentPage + 1
+    };
+    return _this;
   }
 
   _createClass(ToolsBar, [{
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      if (nextProps.currentPage + 1 !== this.state.inputPage) {
+        this.setState({ inputPage: nextProps.currentPage + 1 });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _props2 = this.props,
@@ -64,6 +85,8 @@ var ToolsBar = function (_Component) {
           toggleHandler = _props2.toggleHandler,
           pageCountLabel = _props2.pageCountLabel,
           numPages = _props2.numPages;
+      var inputPage = this.state.inputPage;
+
 
       return _react2.default.createElement(
         "div",
@@ -92,7 +115,12 @@ var ToolsBar = function (_Component) {
           _react2.default.createElement(
             "strong",
             { className: "count-page" },
-            currentPage + 1,
+            _react2.default.createElement("input", { type: "number", value: inputPage,
+              onChange: this._handleChange,
+              onBlur: function onBlur() {
+                return scrollToPageHandler(inputPage - 1);
+              },
+              onKeyPress: this._handleKeyPress }),
             " ",
             pageCountLabel,
             " ",

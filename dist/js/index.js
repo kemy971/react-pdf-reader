@@ -132,7 +132,8 @@ var PDFReader = function (_Component) {
           btnZoomIn = _props.btnZoomIn,
           btnZoomOut = _props.btnZoomOut,
           loadingLabel = _props.loadingLabel,
-          pageCountLabel = _props.pageCountLabel;
+          pageCountLabel = _props.pageCountLabel,
+          renderType = _props.renderType;
 
 
       return _react2.default.createElement(
@@ -176,7 +177,8 @@ var PDFReader = function (_Component) {
             onPageChange: this.changePage,
             scale: scale,
             rotate: rotate,
-            width: width
+            width: width,
+            renderType: renderType
           })
         )
       );
@@ -225,7 +227,7 @@ var _initialiseProps = function _initialiseProps() {
     var context = document.querySelector(".pdf-viewer");
     (0, _velocityAnimate2.default)(page, "scroll", {
       container: context,
-      duration: 300,
+      duration: 0,
       queue: false
     });
   };
@@ -244,6 +246,7 @@ var _initialiseProps = function _initialiseProps() {
 PDFReader.defaultProps = {
   rotate: 0,
   scale: 1,
+  renderType: "canvas",
   currentPage: 0,
   btnToggle: {
     label: "toggle thumbnails"
@@ -267,7 +270,8 @@ PDFReader.defaultProps = {
 PDFReader.propTypes = {
   file: _propTypes2.default.string,
   rotate: _propTypes2.default.number,
-  scale: _propTypes2.default.number,
+  renderType: _propTypes2.default.string,
+  scale: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number]),
   width: _propTypes2.default.number,
   btnToggle: _propTypes2.default.oneOfType([_propTypes2.default.shape({
     label: _propTypes2.default.string,

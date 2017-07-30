@@ -174,7 +174,7 @@ class PDFReader extends Component {
 PDFReader.defaultProps = {
   rotate: 0,
   scale: 1,
-  renderType: "svg",
+  renderType: "canvas",
   currentPage: 0,
   btnToggle: {
     label: "toggle thumbnails"
