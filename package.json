@@ -1,8 +1,17 @@
 {
   "name": "react-pdf-reader",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "main": "dist/js/index.js",
-  "repository": "https://github.com/kemy971/react-pdf-reader",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kemy971/react-pdf-reader"
+  },
+  "keywords": ["ReactJS", "PDFJS", "PDF"],
+  "author": "Kémy CASSIN",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/kemy971/react-pdf-reader/issues"
+  },
   "dependencies": {
     "classnames": "^2.2.5",
     "pdfjs-dist": "^1.8.559",
