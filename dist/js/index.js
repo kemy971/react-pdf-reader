@@ -26,19 +26,23 @@ require("pdfjs-dist/webpack");
 
 require("pdfjs-dist/web/compatibility");
 
-var _Viewer = require("./Viewer");
+var _Viewport = require("./lib/Viewport");
+
+var _Viewer = require("./components/Viewer");
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _ThumbnailViewer = require("./ThumbnailViewer");
+var _ThumbnailViewer = require("./components/ThumbnailViewer");
 
 var _ThumbnailViewer2 = _interopRequireDefault(_ThumbnailViewer);
 
-var _ToolsBar = require("./ToolsBar");
+var _ToolsBar = require("./components/ToolsBar");
 
 var _ToolsBar2 = _interopRequireDefault(_ToolsBar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -63,6 +67,7 @@ var PDFReader = function (_Component) {
 
     _this.state = {
       pdf: {},
+      pages: [],
       isLoading: true,
       currentPage: currentPage,
       scale: scale,
@@ -98,23 +103,6 @@ var PDFReader = function (_Component) {
        */
 
   }, {
-    key: "loadPages",
-    value: function loadPages() {
-      var _this2 = this;
-
-      var pdf = this.state.pdf;
-
-      var pagesPromises = [];
-
-      for (var i = 1; i <= pdf.numPages; i++) {
-        pagesPromises.push(pdf.getPage(i));
-      }
-
-      Promise.all(pagesPromises).then(function (pages) {
-        _this2.setState({ pages: pages, isLoading: false });
-      });
-    }
-  }, {
     key: "render",
     value: function render() {
       var _state2 = this.state,
@@ -131,8 +119,10 @@ var PDFReader = function (_Component) {
           btnDown = _props.btnDown,
           btnZoomIn = _props.btnZoomIn,
           btnZoomOut = _props.btnZoomOut,
+          btnFitWidth = _props.btnFitWidth,
           loadingLabel = _props.loadingLabel,
-          pageCountLabel = _props.pageCountLabel;
+          pageCountLabel = _props.pageCountLabel,
+          renderType = _props.renderType;
 
 
       return _react2.default.createElement(
@@ -161,6 +151,7 @@ var PDFReader = function (_Component) {
             scrollToPageHandler: this.scrollToPage,
             btnZoomIn: btnZoomIn,
             btnZoomOut: btnZoomOut,
+            btnFitWidth: btnFitWidth,
             zoomHandler: this.zoom,
             currentPage: currentPage,
             numPages: pages.length,
@@ -176,7 +167,8 @@ var PDFReader = function (_Component) {
             onPageChange: this.changePage,
             scale: scale,
             rotate: rotate,
-            width: width
+            width: width,
+            renderType: renderType
           })
         )
       );
@@ -187,37 +179,80 @@ var PDFReader = function (_Component) {
 }(_react.Component);
 
 var _initialiseProps = function _initialiseProps() {
-  var _this3 = this;
+  var _this2 = this;
 
   this.onDocumentLoad = function (pdf) {
-    _this3.setState({
+    _this2.setState({
       pdf: pdf
     });
-    _this3.loadPages();
+    _this2.loadFirstPage();
   };
 
   this.onDocumentError = function (error) {
-    _this3.setState({
+    _this2.setState({
       pdf: false
     });
   };
 
-  this.zoom = function (direction) {
-    var scale = _this3.state.scale;
+  this.loadFirstPage = function () {
+    var pdf = _this2.state.pdf;
 
-    if (direction === "in") {
-      _this3.setState({ scale: scale + 0.1 });
-    } else {
-      _this3.setState(function (_state) {
-        return {
-          scale: _state.scale - 0.1 > 0.5 ? _state.scale - 0.1 : 0.5
-        };
+
+    pdf.getPage(1).then(function (page) {
+      _this2.setState(function (_state) {
+        return { pages: [].concat(_toConsumableArray(_state.pages), [page]), isLoading: false };
+      }, function () {
+        _this2.loadPages();
       });
+    });
+  };
+
+  this.loadPages = function () {
+    var _state3 = _this2.state,
+        pdf = _state3.pdf,
+        pages = _state3.pages;
+
+    var pagesPromises = [];
+    console.log(pages);
+
+    for (var i = 2; i <= pdf.numPages; i++) {
+      pagesPromises.push(pdf.getPage(i));
+    }
+
+    Promise.all(pagesPromises).then(function (pages) {
+      _this2.setState(function (_state) {
+        return { pages: [].concat(_toConsumableArray(_state.pages), _toConsumableArray(pages)), isLoading: false };
+      });
+    });
+  };
+
+  this.zoom = function (direction) {
+    var _state4 = _this2.state,
+        scale = _state4.scale,
+        pages = _state4.pages;
+
+    var container = document.querySelector(".pdf-viewer");
+    _this2.minZoomScale = (0, _Viewport.getMinZoomScale)(pages[0], container);
+
+    switch (direction) {
+      case "in":
+        _this2.setState({ scale: scale + 0.1 });
+        break;
+      case "out":
+        _this2.setState(function (_state) {
+          return {
+            scale: _state.scale - 0.1 > _this2.minZoomScale ? _state.scale - 0.1 : _this2.minZoomScale
+          };
+        });
+        break;
+      case "fitWidth":
+        _this2.setState({ scale: (0, _Viewport.getFitWidthScale)(pages[0], container) });
+        break;
     }
   };
 
   this.changePage = function (pageIndex) {
-    _this3.setState({ currentPage: pageIndex });
+    _this2.setState({ currentPage: pageIndex });
   };
 
   this.scrollToPage = function (pageIndex) {
@@ -225,17 +260,17 @@ var _initialiseProps = function _initialiseProps() {
     var context = document.querySelector(".pdf-viewer");
     (0, _velocityAnimate2.default)(page, "scroll", {
       container: context,
-      duration: 300,
+      duration: 0,
       queue: false
     });
   };
 
   this.onLoaded = function () {
-    _this3.props.onViewLoadComplete();
+    _this2.props.onViewLoadComplete();
   };
 
   this.toggleThumbnailsView = function () {
-    _this3.setState(function (_state) {
+    _this2.setState(function (_state) {
       return { thumbnailsViewOpen: !_state.thumbnailsViewOpen };
     });
   };
@@ -244,6 +279,7 @@ var _initialiseProps = function _initialiseProps() {
 PDFReader.defaultProps = {
   rotate: 0,
   scale: 1,
+  renderType: "canvas",
   currentPage: 0,
   btnToggle: {
     label: "toggle thumbnails"
@@ -260,6 +296,9 @@ PDFReader.defaultProps = {
   btnZoomOut: {
     label: "Zoom Out"
   },
+  btnFitWidth: {
+    label: "Fit Width"
+  },
   loadingLabel: "PDF Document Loading ...",
   pageCountLabel: "in"
 };
@@ -267,7 +306,8 @@ PDFReader.defaultProps = {
 PDFReader.propTypes = {
   file: _propTypes2.default.string,
   rotate: _propTypes2.default.number,
-  scale: _propTypes2.default.number,
+  renderType: _propTypes2.default.string,
+  scale: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number]),
   width: _propTypes2.default.number,
   btnToggle: _propTypes2.default.oneOfType([_propTypes2.default.shape({
     label: _propTypes2.default.string,
@@ -294,6 +334,12 @@ PDFReader.propTypes = {
     iconButton: _propTypes2.default.bool
   }), _propTypes2.default.element]),
   btnZoomOut: _propTypes2.default.oneOfType([_propTypes2.default.shape({
+    label: _propTypes2.default.string,
+    classname: _propTypes2.default.string,
+    iconClassname: _propTypes2.default.string,
+    iconButton: _propTypes2.default.bool
+  }), _propTypes2.default.element]),
+  btnFitWidth: _propTypes2.default.oneOfType([_propTypes2.default.shape({
     label: _propTypes2.default.string,
     classname: _propTypes2.default.string,
     iconClassname: _propTypes2.default.string,

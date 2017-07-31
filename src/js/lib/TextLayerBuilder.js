@@ -14,8 +14,6 @@
  */
 /* globals PDFJS */
 
-'use strict';
-
 /**
  * @typedef {Object} TextLayerBuilderOptions
  * @property {HTMLDivElement} textLayerDiv - The text layer container.
@@ -300,8 +298,8 @@ export const TextLayerBuilder = (function TextLayerBuilderClosure() {
         // However it does not work when selection started on empty space.
         var adjustTop = e.target !== div;
 //#if GENERIC
-        adjustTop = adjustTop && window.getComputedStyle(end).
-          getPropertyValue('-moz-user-select') !== 'none';
+        adjustTop = adjustTop && window.getComputedStyle(end)
+            .getPropertyValue('-moz-user-select') !== 'none';
 //#endif
         if (adjustTop) {
           var divBounds = div.getBoundingClientRect();

@@ -3,8 +3,8 @@ import "pdfjs-dist/webpack";
 import "pdfjs-dist/web/compatibility";
 import "waypoints/lib/noframework.waypoints.js";
 import "waypoints/lib/shortcuts/inview.js";
-import { TextLayerBuilder } from "./plugin/TextLayerBuilder";
-import Viewer from "./Viewer";
+import { getViewport } from '../lib/Viewport'
+import { TextLayerBuilder } from "../lib/TextLayerBuilder.js";
 
 let PDFJS = window.PDFJS;
 let Waypoint = window.Waypoint;
@@ -32,15 +32,18 @@ class Page extends Component {
     }
   }
 
-  updatePage = (scale = this.state.scale) => {
+  updatePage = () => {
     this.renderPagePlaceholder(this.getViewport().viewportDefaultRatio);
-    this.resetWaypoint();
+    this.refreshWaypoints();
     this.cleanPage();
-    this.setState({scaleChange: true});
+    if(this.state.isInview){
+      this.renderPage();
+    } else {
+      this.setState({scaleChange: true});
+    }
   }
 
   initPage = () => {
-    const { page } = this.props;
     const { viewport, viewportDefaultRatio } = this.getViewport();
     this.renderPagePlaceholder(viewportDefaultRatio);
     this.initWaypoint(viewport.height);
@@ -103,35 +106,16 @@ class Page extends Component {
     ];
   };
 
-  resetWaypoint = () => {
-    this.waypoints.forEach(waypoint => {
-      waypoint.destroy();
-    });
-
-    this.waypoints = null;
-
-    this.initWaypoint(this.getViewport().viewportDefaultRatio.height);
-  };
+  refreshWaypoints = () => {
+    Waypoint.refreshAll();
+  }
 
   getViewport = () => {
     const { page } = this.props;
     const { scale } = this.state;
     const rotate = this.props.rotate || 0;
-    const pixelRatio = window.devicePixelRatio || 1;
-    let viewport = page.getViewport(
-      scale * pixelRatio,
-      rotate
-    );
-
-    let viewportDefaultRatio = page.getViewport(
-      scale,
-      rotate
-    );
-
-    return {
-      viewport,
-      viewportDefaultRatio
-    };
+    
+    return getViewport(page, scale, rotate);
   };
 
   renderPage = () => {

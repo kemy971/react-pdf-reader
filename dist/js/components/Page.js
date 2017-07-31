@@ -18,11 +18,9 @@ require("waypoints/lib/noframework.waypoints.js");
 
 require("waypoints/lib/shortcuts/inview.js");
 
-var _TextLayerBuilder = require("./plugin/TextLayerBuilder");
+var _Viewport = require("../lib/Viewport");
 
-var _Viewer = require("./Viewer");
-
-var _Viewer2 = _interopRequireDefault(_Viewer);
+var _TextLayerBuilder = require("../lib/TextLayerBuilder.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44,17 +42,17 @@ var Page = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 
     _this.updatePage = function () {
-      var scale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.state.scale;
-
       _this.renderPagePlaceholder(_this.getViewport().viewportDefaultRatio);
-      _this.resetWaypoint();
+      _this.refreshWaypoints();
       _this.cleanPage();
-      _this.setState({ scaleChange: true });
+      if (_this.state.isInview) {
+        _this.renderPage();
+      } else {
+        _this.setState({ scaleChange: true });
+      }
     };
 
     _this.initPage = function () {
-      var page = _this.props.page;
-
       var _this$getViewport = _this.getViewport(),
           viewport = _this$getViewport.viewport,
           viewportDefaultRatio = _this$getViewport.viewportDefaultRatio;
@@ -116,14 +114,8 @@ var Page = function (_Component) {
       })];
     };
 
-    _this.resetWaypoint = function () {
-      _this.waypoints.forEach(function (waypoint) {
-        waypoint.destroy();
-      });
-
-      _this.waypoints = null;
-
-      _this.initWaypoint(_this.getViewport().viewportDefaultRatio.height);
+    _this.refreshWaypoints = function () {
+      Waypoint.refreshAll();
     };
 
     _this.getViewport = function () {
@@ -131,15 +123,8 @@ var Page = function (_Component) {
       var scale = _this.state.scale;
 
       var rotate = _this.props.rotate || 0;
-      var pixelRatio = window.devicePixelRatio || 1;
-      var viewport = page.getViewport(scale * pixelRatio, rotate);
 
-      var viewportDefaultRatio = page.getViewport(scale, rotate);
-
-      return {
-        viewport: viewport,
-        viewportDefaultRatio: viewportDefaultRatio
-      };
+      return (0, _Viewport.getViewport)(page, scale, rotate);
     };
 
     _this.renderPage = function () {

@@ -129,6 +129,7 @@ var Thumbnail = function (_Component) {
           ref: function ref(img) {
             return _this3.thumbnail = img;
           },
+          alt: "pdf-thumbnail-" + (pageIndex + 1),
           onClick: onSelect
         }),
         _react2.default.createElement(

@@ -1,3 +1,8 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 /* Copyright 2012 Mozilla Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +19,6 @@
  */
 /* globals PDFJS */
 
-'use strict';
-
 /**
  * @typedef {Object} TextLayerBuilderOptions
  * @property {HTMLDivElement} textLayerDiv - The text layer container.
@@ -31,10 +34,6 @@
  * also provides a way to highlight text that is being searched for.
  * @class
  */
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 var TextLayerBuilder = exports.TextLayerBuilder = function TextLayerBuilderClosure() {
   function TextLayerBuilder(options) {
     this.textLayerDiv = options.textLayerDiv;

@@ -75,6 +75,7 @@ class Thumbnail extends Component {
           width={this.imgPlaceholder.width}
           height={this.imgPlaceholder.height}
           ref={img => (this.thumbnail = img)}
+          alt={`pdf-thumbnail-${pageIndex + 1}`}
           onClick={onSelect}
         />
         <h5>

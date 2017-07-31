@@ -15,7 +15,7 @@ body {
     .pdf-reader-header {
       left: 200px;
     }
-
+    
     .pdf-thumbnail-viewer {
       margin-left: 0;
     }
@@ -77,9 +77,10 @@ body {
       img {
         width: 100px;
         opacity: 0.5;
-        transition: opacity .3s ease;
-        cursor: pointer;
+        background-color: #fff;
         box-shadow: 0 0 1px 2px transparentize(#000, .9);
+        cursor: pointer;
+        transition: opacity .3s ease;
       }
       &.active img {
         opacity: 1;
