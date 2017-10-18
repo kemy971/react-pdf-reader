@@ -10,7 +10,7 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-require("pdfjs-dist/webpack");
+require("pdfjs-dist/build/pdf.combined");
 
 require("pdfjs-dist/web/compatibility");
 

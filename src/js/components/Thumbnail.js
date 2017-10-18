@@ -1,27 +1,27 @@
-import React, { Component } from "react";
-import classnames from "classnames";
-import "waypoints/lib/noframework.waypoints.js";
-import "waypoints/lib/shortcuts/inview.js";
-
-let Waypoint = window.Waypoint;
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import 'waypoints/lib/noframework.waypoints';
+import 'waypoints/lib/shortcuts/inview';
 
 class Thumbnail extends Component {
   componentWillMount() {
     const pixelRatio = window.devicePixelRatio || 1;
-    let viewport = this.getViewport();
+    const viewport = this.getViewport();
     this.imgPlaceholder = {
       width: viewport.width / pixelRatio,
-      height: viewport.height / pixelRatio
+      height: viewport.height / pixelRatio,
     };
   }
 
   componentDidMount() {
-    new Waypoint.Inview({
+    const { Waypoint } = window;
+    this.waypoint = new Waypoint.Inview({
       element: this.thumbnailContainer,
-      context: document.querySelector(".pdf-thumbnail-viewer"),
+      context: document.querySelector('.pdf-thumbnail-viewer'),
       enter: () => {
         this.renderThumbnail();
-      }
+      },
     });
   }
 
@@ -33,7 +33,7 @@ class Thumbnail extends Component {
     const width = 100;
 
     let pageScale = width / page.getViewport(scale, rotate).width;
-    pageScale = scale * pageScale;
+    pageScale *= scale;
 
     return page.getViewport(pageScale * pixelRatio, rotate);
   };
@@ -42,19 +42,19 @@ class Thumbnail extends Component {
     const { page } = this.props;
     const pixelRatio = window.devicePixelRatio || 1;
 
-    let viewport = this.getViewport();
+    const viewport = this.getViewport();
 
-    //Render thumbnail canvas for all pages
+    // Render thumbnail canvas for all pages
 
-    let canvas = document.createElement("canvas");
+    const canvas = document.createElement('canvas');
     canvas.height = viewport.height;
     canvas.width = viewport.width;
     canvas.style.height = `${viewport.height / pixelRatio}px`;
     canvas.style.width = `${viewport.width / pixelRatio}px`;
-    const canvasContext = canvas.getContext("2d");
+    const canvasContext = canvas.getContext('2d');
     const renderContext = {
       canvasContext,
-      viewport
+      viewport,
     };
 
     page.render(renderContext).then(() => {
@@ -65,11 +65,11 @@ class Thumbnail extends Component {
   };
 
   render() {
-    let { isCurrentPage, onSelect, pageIndex } = this.props;
+    const { isCurrentPage, onSelect, pageIndex } = this.props;
     return (
       <div
         ref={div => (this.thumbnailContainer = div)}
-        className={classnames("pdf-thumbnail", { active: isCurrentPage })}
+        className={classnames('pdf-thumbnail', { active: isCurrentPage })}
       >
         <img
           width={this.imgPlaceholder.width}
@@ -77,6 +77,7 @@ class Thumbnail extends Component {
           ref={img => (this.thumbnail = img)}
           alt={`pdf-thumbnail-${pageIndex + 1}`}
           onClick={onSelect}
+          role="presentation"
         />
         <h5>
           {pageIndex + 1}
@@ -85,5 +86,12 @@ class Thumbnail extends Component {
     );
   }
 }
+
+Thumbnail.propTypes = {
+  page: PropTypes.object.isRequired,
+  isCurrentPage: PropTypes.bool.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  pageIndex: PropTypes.number.isRequired,
+};
 
 export default Thumbnail;
