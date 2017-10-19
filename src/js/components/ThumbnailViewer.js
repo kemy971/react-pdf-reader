@@ -18,7 +18,6 @@ function ThumbnailViewer({ currentPage, onSelect, pages }) {
 }
 
 ThumbnailViewer.propTypes = {
-  currentPage: PropTypes.number.isRequired,
   onSelect: PropTypes.func.isRequired,
   pages: PropTypes.array.isRequired,
 };
