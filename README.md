@@ -1,6 +1,6 @@
 # React PDF Reader
 [![npm version](https://badge.fury.io/js/react-pdf-reader.svg)](https://badge.fury.io/js/react-pdf-reader)
-https://travis-ci.org/kemy971/react-pdf-reader.svg?branch=feature%2Ftravisci
+![Travis build](https://travis-ci.org/kemy971/react-pdf-reader.svg?branch=feature%2Ftravisci)
 
 A React component to read PDF Document.
 
