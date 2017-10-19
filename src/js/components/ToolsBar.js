@@ -1,5 +1,6 @@
-import React, { Component } from "react";
-import Button from "./Button";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Button from './Button';
 
 function elementWrapper(_element, _props) {
   const ElementType = _element.type;
@@ -8,34 +9,29 @@ function elementWrapper(_element, _props) {
 }
 
 class ToolsBar extends Component {
-
-  constructor(props)
-  {
+  constructor(props) {
     super(props);
     this.state = {
-      inputPage: props.currentPage + 1
+      inputPage: props.currentPage + 1,
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentPage + 1 !== this.state.inputPage) {
+      this.setState({ inputPage: nextProps.currentPage + 1 });
     }
   }
 
-  componentWillReceiveProps(nextProps)
-  {
-    if(nextProps.currentPage + 1 !== this.state.inputPage ){
-      this.setState({inputPage: nextProps.currentPage + 1});
-    }
-  }
-
-  getButton = (button, clickHandler) => {
-    return React.isValidElement(button)
-      ? elementWrapper(button, { onClick: clickHandler })
-      : <Button {...button} clickHandler={clickHandler} />;
-  };
+  getButton = (button, clickHandler) => (React.isValidElement(button)
+    ? elementWrapper(button, { onClick: clickHandler })
+    : <Button {...button} clickHandler={clickHandler} />);
 
   _handleChange = (e) => {
-    const {numPages} = this.props;
-    let value = e.target.value;
-    if(value > 0 && value <= numPages){
-      this.setState({inputPage: e.target.value})
-    } 
+    const { numPages } = this.props;
+    const { value } = e.target;
+    if (value > 0 && value <= numPages) {
+      this.setState({ inputPage: e.target.value });
+    }
   }
 
   _handleKeyPress = (e) => {
@@ -57,11 +53,11 @@ class ToolsBar extends Component {
       zoomHandler,
       toggleHandler,
       pageCountLabel,
-      numPages
+      numPages,
     } = this.props;
 
     const {
-      inputPage
+      inputPage,
     } = this.state;
 
     return (
@@ -70,17 +66,20 @@ class ToolsBar extends Component {
           {this.getButton(btnToggle, toggleHandler)}
         </div>
         <div className="zoom-actions">
-        {this.getButton(btnZoomOut, () => zoomHandler("out"))}
-        {this.getButton(btnZoomIn, () => zoomHandler("in"))}
-        {this.getButton(btnFitWidth, () => zoomHandler("fitWidth"))}
+          {this.getButton(btnZoomOut, () => zoomHandler('out'))}
+          {this.getButton(btnZoomIn, () => zoomHandler('in'))}
+          {this.getButton(btnFitWidth, () => zoomHandler('fitWidth'))}
         </div>
         <span>
           {this.getButton(btnUp, () => scrollToPageHandler(currentPage - 1))}
           <strong className="count-page">
-          <input type="number" value={inputPage} 
-          onChange={this._handleChange}
-          onBlur={() => scrollToPageHandler(inputPage - 1)}
-          onKeyPress={this._handleKeyPress}/> {pageCountLabel} {numPages || 0}
+            <input
+              type="number"
+              value={inputPage}
+              onChange={this._handleChange}
+              onBlur={() => scrollToPageHandler(inputPage - 1)}
+              onKeyPress={this._handleKeyPress}
+            /> {pageCountLabel} {numPages || 0}
           </strong>
           {this.getButton(btnDown, () => scrollToPageHandler(currentPage + 1))}
         </span>
@@ -88,5 +87,68 @@ class ToolsBar extends Component {
     );
   }
 }
+
+ToolsBar.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  numPages: PropTypes.number.isRequired,
+  btnToggle: PropTypes.oneOfType([
+    PropTypes.shape({
+      label: PropTypes.string,
+      classname: PropTypes.string,
+      iconClassname: PropTypes.string,
+      iconButton: PropTypes.bool,
+    }),
+    PropTypes.element,
+  ]),
+  btnUp: PropTypes.oneOfType([
+    PropTypes.shape({
+      label: PropTypes.string,
+      classname: PropTypes.string,
+      iconClassname: PropTypes.string,
+      iconButton: PropTypes.bool,
+    }),
+    PropTypes.element,
+  ]),
+  btnDown: PropTypes.oneOfType([
+    PropTypes.shape({
+      label: PropTypes.string,
+      classname: PropTypes.string,
+      iconClassname: PropTypes.string,
+      iconButton: PropTypes.bool,
+    }),
+    PropTypes.element,
+  ]),
+  btnZoomIn: PropTypes.oneOfType([
+    PropTypes.shape({
+      label: PropTypes.string,
+      classname: PropTypes.string,
+      iconClassname: PropTypes.string,
+      iconButton: PropTypes.bool,
+    }),
+    PropTypes.element,
+  ]),
+  btnZoomOut: PropTypes.oneOfType([
+    PropTypes.shape({
+      label: PropTypes.string,
+      classname: PropTypes.string,
+      iconClassname: PropTypes.string,
+      iconButton: PropTypes.bool,
+    }),
+    PropTypes.element,
+  ]),
+  btnFitWidth: PropTypes.oneOfType([
+    PropTypes.shape({
+      label: PropTypes.string,
+      classname: PropTypes.string,
+      iconClassname: PropTypes.string,
+      iconButton: PropTypes.bool,
+    }),
+    PropTypes.element,
+  ]),
+  pageCountLabel: PropTypes.string,
+  scrollToPageHandler: PropTypes.func.isRequired,
+  zoomHandler: PropTypes.func.isRequired,
+  toggleHandler: PropTypes.func.isRequired,
+};
 
 export default ToolsBar;

@@ -6,7 +6,11 @@
     "type": "git",
     "url": "https://github.com/kemy971/react-pdf-reader"
   },
-  "keywords": ["ReactJS", "PDFJS", "PDF"],
+  "keywords": [
+    "ReactJS",
+    "PDFJS",
+    "PDF"
+  ],
   "author": "Kémy CASSIN",
   "license": "",
   "bugs": {
@@ -22,22 +26,29 @@
     "waypoints": "^4.0.1"
   },
   "devDependencies": {
+    "babel-eslint": "^8.0.1",
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
+    "eslint": "^4.8.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
     "node-sass-chokidar": "^0.0.3",
     "npm-run-all": "^4.0.2",
-    "react-scripts": "1.0.10"
+    "react-scripts": "^1.0.14"
   },
   "scripts": {
+    "lint": "./node_modules/.bin/eslint ./src/js/**/*.js",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build": "babel src/ -d dist/ --copy-files --ignore src/index.js",
     "build-css": "node-sass-chokidar src/sass/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/sass/ -o src/ --watch --recursive",
+    "pretest": "npm run lint",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
