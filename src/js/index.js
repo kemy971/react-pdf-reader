@@ -30,8 +30,8 @@ class PDFReader extends Component {
   }
 
   /**
-     * Called when a document is loaded successfully.
-     */
+   * Called when a document is loaded successfully.
+   */
   onDocumentLoad = (pdf) => {
     this.setState({
       pdf,
@@ -49,22 +49,22 @@ class PDFReader extends Component {
     throw new Error(error);
   };
 
-  onLoaded = () => {
-    this.props.onViewLoadComplete();
-  };
-
-  loadPages = () => {
-    const { pdf } = this.state;
-    const pagesPromises = [];
-
-    for (let i = 2; i <= pdf.numPages; i++) {
-      pagesPromises.push(pdf.getPage(i));
+  onViewerLoaded = () => {
+    const { onViewLoadComplete } = this.props;
+    if (onViewLoadComplete) {
+      onViewLoadComplete();
     }
-
-    Promise.all(pagesPromises).then((pages) => {
-      this.setState(_state => ({ pages: [..._state.pages, ...pages], isLoading: false }));
-    });
   };
+
+  /**
+   * Load document
+   * @param {*} args
+   */
+  loadDocument = (...args) => {
+    PDFJS.getDocument(...args)
+      .then(this.onDocumentLoad)
+      .catch(this.onDocumentError);
+  }
 
   scrollToPage = (pageIndex) => {
     const page = document.getElementById(`pdf-page-${pageIndex}`);
@@ -102,26 +102,30 @@ class PDFReader extends Component {
     }
   };
 
-  /**
-   * Load document
-   * @param {*} args
-   */
-  loadDocument(...args) {
-    PDFJS.getDocument(...args)
-      .then(this.onDocumentLoad)
-      .catch(this.onDocumentError);
-  }
-
-  loadFirstPage() {
+  loadFirstPage = () => {
     const { pdf } = this.state;
 
     pdf.getPage(1)
       .then((page) => {
-        this.setState(_state => ({ pages: [..._state.pages, page], isLoading: false }), () => {
+        this.setState({ pages: [page], isLoading: false }, () => {
           this.loadPages();
         });
       });
   }
+
+  loadPages = () => {
+    const { pdf } = this.state;
+    const pagesPromises = [];
+    for (let i = 2; i <= pdf.numPages; i++) {
+      const pagePromise = pdf.getPage(i);
+      pagesPromises.push(pagePromise);
+      pagePromise.then((page) => {
+        this.setState(_state => ({ pages: [..._state.pages, page] }));
+      });
+    }
+
+    Promise.all(pagesPromises).then(this.onViewerLoaded);
+  };
 
   toggleThumbnailsView = () => {
     this.setState(_state => ({ thumbnailsViewOpen: !_state.thumbnailsViewOpen }));
