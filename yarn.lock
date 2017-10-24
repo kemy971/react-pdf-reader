@@ -5265,9 +5265,9 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-pdfjs-dist@^1.9.648:
-  version "1.9.648"
-  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-1.9.648.tgz#5cf1ab0ecd24c491c7b90415004388918f5eb32a"
+pdfjs-dist@^1.10.83:
+  version "1.10.83"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-1.10.83.tgz#118dc26fec4721fe099db1e9a8d6b8fada92ea36"
   dependencies:
     node-ensure "^0.0.0"
     worker-loader "^1.0.0"

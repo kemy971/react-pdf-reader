@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "pdfjs-dist": "^1.9.648",
+    "pdfjs-dist": "^1.10.83",
     "prop-types": "^15.6.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
