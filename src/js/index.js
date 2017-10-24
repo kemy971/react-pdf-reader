@@ -107,24 +107,22 @@ class PDFReader extends Component {
 
     pdf.getPage(1)
       .then((page) => {
-        this.setState({ pages: [page], isLoading: false }, () => {
-          this.loadPages();
+        this.setState({ pages: [page] }, () => {
+          this.setState({ isLoading: false });
+          this.loadPages(pdf, 2);
         });
       });
   }
 
-  loadPages = () => {
-    const { pdf } = this.state;
-    const pagesPromises = [];
-    for (let i = 2; i <= pdf.numPages; i++) {
-      const pagePromise = pdf.getPage(i);
-      pagesPromises.push(pagePromise);
-      pagePromise.then((page) => {
+  loadPages = (pdf, pageIndex) => {
+    if (pageIndex <= pdf.numPages) {
+      pdf.getPage(pageIndex).then((page) => {
         this.setState(_state => ({ pages: [..._state.pages, page] }));
+        this.loadPages(pdf, pageIndex + 1);
       });
+    } else {
+      this.onViewerLoaded();
     }
-
-    Promise.all(pagesPromises).then(this.onViewerLoaded);
   };
 
   toggleThumbnailsView = () => {
@@ -138,6 +136,7 @@ class PDFReader extends Component {
       currentPage,
       scale,
       thumbnailsViewOpen,
+      pdf,
     } = this.state;
 
     const {
@@ -178,7 +177,7 @@ class PDFReader extends Component {
               btnFitWidth={btnFitWidth}
               zoomHandler={this.zoom}
               currentPage={currentPage}
-              numPages={pages.length}
+              numPages={pdf.numPages}
               pageCountLabel={pageCountLabel}
             />
             <ThumbnailViewer
@@ -207,7 +206,7 @@ PDFReader.defaultProps = {
   renderType: 'canvas',
   currentPage: 0,
   btnToggle: {
-    label: 'toggle thumbnails',
+    label: 'toggle panel',
   },
   btnUp: {
     label: 'Up',
