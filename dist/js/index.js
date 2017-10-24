@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,37 +6,37 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = require("prop-types");
+var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _velocityAnimate = require("velocity-animate");
+var _velocityAnimate = require('velocity-animate');
 
 var _velocityAnimate2 = _interopRequireDefault(_velocityAnimate);
 
-var _classnames = require("classnames");
+var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-require("pdfjs-dist/webpack");
+require('pdfjs-dist/webpack');
 
-require("pdfjs-dist/web/compatibility");
+require('pdfjs-dist/web/compatibility');
 
-var _Viewport = require("./lib/Viewport");
+var _Viewport = require('./lib/Viewport');
 
-var _Viewer = require("./components/Viewer");
+var _Viewer = require('./components/Viewer');
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _ThumbnailViewer = require("./components/ThumbnailViewer");
+var _ThumbnailViewer = require('./components/ThumbnailViewer');
 
 var _ThumbnailViewer2 = _interopRequireDefault(_ThumbnailViewer);
 
-var _ToolsBar = require("./components/ToolsBar");
+var _ToolsBar = require('./components/ToolsBar');
 
 var _ToolsBar2 = _interopRequireDefault(_ToolsBar);
 
@@ -50,7 +50,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PDFJS = window.PDFJS;
+var _window = window,
+    PDFJS = _window.PDFJS;
 
 var PDFReader = function (_Component) {
   _inherits(PDFReader, _Component);
@@ -77,40 +78,36 @@ var PDFReader = function (_Component) {
   }
 
   _createClass(PDFReader, [{
-    key: "componentWillMount",
+    key: 'componentWillMount',
     value: function componentWillMount() {
       this.loadDocument(this.props.file);
     }
 
     /**
-       * Load document
-       * @param {*} args
-       */
-
-  }, {
-    key: "loadDocument",
-    value: function loadDocument() {
-      PDFJS.getDocument.apply(PDFJS, arguments).then(this.onDocumentLoad).catch(this.onDocumentError);
-    }
-
-    /**
-       * Called when a document is loaded successfully.
-       */
+     * Called when a document is loaded successfully.
+     */
 
 
     /**
        * Called when a document fails to load.
        */
 
+
+    /**
+     * Load document
+     * @param {*} args
+     */
+
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _state2 = this.state,
           pages = _state2.pages,
           isLoading = _state2.isLoading,
           currentPage = _state2.currentPage,
           scale = _state2.scale,
-          thumbnailsViewOpen = _state2.thumbnailsViewOpen;
+          thumbnailsViewOpen = _state2.thumbnailsViewOpen,
+          pdf = _state2.pdf;
       var _props = this.props,
           width = _props.width,
           rotate = _props.rotate,
@@ -126,22 +123,22 @@ var PDFReader = function (_Component) {
 
 
       return _react2.default.createElement(
-        "div",
+        'div',
         {
-          className: (0, _classnames2.default)("pdf-reader", {
-            "tumbnails-open": thumbnailsViewOpen
+          className: (0, _classnames2.default)('pdf-reader', {
+            'tumbnails-open': thumbnailsViewOpen
           })
         },
         isLoading ? _react2.default.createElement(
-          "div",
-          { className: "pdf-loading" },
+          'div',
+          { className: 'pdf-loading' },
           _react2.default.createElement(
-            "h3",
+            'h3',
             null,
             loadingLabel
           )
         ) : _react2.default.createElement(
-          "div",
+          'div',
           null,
           _react2.default.createElement(_ToolsBar2.default, {
             btnToggle: btnToggle,
@@ -154,7 +151,7 @@ var PDFReader = function (_Component) {
             btnFitWidth: btnFitWidth,
             zoomHandler: this.zoom,
             currentPage: currentPage,
-            numPages: pages.length,
+            numPages: pdf.numPages,
             pageCountLabel: pageCountLabel
           }),
           _react2.default.createElement(_ThumbnailViewer2.default, {
@@ -192,6 +189,60 @@ var _initialiseProps = function _initialiseProps() {
     _this2.setState({
       pdf: false
     });
+    throw new Error(error);
+  };
+
+  this.onViewerLoaded = function () {
+    var onViewLoadComplete = _this2.props.onViewLoadComplete;
+
+    if (onViewLoadComplete) {
+      onViewLoadComplete();
+    }
+  };
+
+  this.loadDocument = function () {
+    PDFJS.getDocument.apply(PDFJS, arguments).then(_this2.onDocumentLoad).catch(_this2.onDocumentError);
+  };
+
+  this.scrollToPage = function (pageIndex) {
+    var page = document.getElementById('pdf-page-' + pageIndex);
+    var context = document.querySelector('.pdf-viewer');
+    (0, _velocityAnimate2.default)(page, 'scroll', {
+      container: context,
+      duration: 0,
+      queue: false
+    });
+  };
+
+  this.changePage = function (pageIndex) {
+    _this2.setState({ currentPage: pageIndex });
+  };
+
+  this.zoom = function (direction) {
+    var _state3 = _this2.state,
+        scale = _state3.scale,
+        pages = _state3.pages;
+
+    var container = document.querySelector('.pdf-viewer');
+    _this2.minZoomScale = (0, _Viewport.getMinZoomScale)(pages[0], container);
+
+    switch (direction) {
+      case 'in':
+        _this2.setState({ scale: scale + 0.1 });
+        break;
+      case 'out':
+        _this2.setState(function (_state) {
+          return {
+            scale: _state.scale - 0.1 > _this2.minZoomScale ? _state.scale - 0.1 : _this2.minZoomScale
+          };
+        });
+        break;
+      case 'fitWidth':
+        _this2.setState({ scale: (0, _Viewport.getFitWidthScale)(pages[0], container) });
+        break;
+      default:
+        break;
+    }
   };
 
   this.loadFirstPage = function () {
@@ -199,74 +250,24 @@ var _initialiseProps = function _initialiseProps() {
 
 
     pdf.getPage(1).then(function (page) {
-      _this2.setState(function (_state) {
-        return { pages: [].concat(_toConsumableArray(_state.pages), [page]), isLoading: false };
-      }, function () {
-        _this2.loadPages();
+      _this2.setState({ pages: [page] }, function () {
+        _this2.setState({ isLoading: false });
+        _this2.loadPages(pdf, 2);
       });
     });
   };
 
-  this.loadPages = function () {
-    var _state3 = _this2.state,
-        pdf = _state3.pdf,
-        pages = _state3.pages;
-
-    var pagesPromises = [];
-    console.log(pages);
-
-    for (var i = 2; i <= pdf.numPages; i++) {
-      pagesPromises.push(pdf.getPage(i));
-    }
-
-    Promise.all(pagesPromises).then(function (pages) {
-      _this2.setState(function (_state) {
-        return { pages: [].concat(_toConsumableArray(_state.pages), _toConsumableArray(pages)), isLoading: false };
-      });
-    });
-  };
-
-  this.zoom = function (direction) {
-    var _state4 = _this2.state,
-        scale = _state4.scale,
-        pages = _state4.pages;
-
-    var container = document.querySelector(".pdf-viewer");
-    _this2.minZoomScale = (0, _Viewport.getMinZoomScale)(pages[0], container);
-
-    switch (direction) {
-      case "in":
-        _this2.setState({ scale: scale + 0.1 });
-        break;
-      case "out":
+  this.loadPages = function (pdf, pageIndex) {
+    if (pageIndex <= pdf.numPages) {
+      pdf.getPage(pageIndex).then(function (page) {
         _this2.setState(function (_state) {
-          return {
-            scale: _state.scale - 0.1 > _this2.minZoomScale ? _state.scale - 0.1 : _this2.minZoomScale
-          };
+          return { pages: [].concat(_toConsumableArray(_state.pages), [page]) };
         });
-        break;
-      case "fitWidth":
-        _this2.setState({ scale: (0, _Viewport.getFitWidthScale)(pages[0], container) });
-        break;
+        _this2.loadPages(pdf, pageIndex + 1);
+      });
+    } else {
+      _this2.onViewerLoaded();
     }
-  };
-
-  this.changePage = function (pageIndex) {
-    _this2.setState({ currentPage: pageIndex });
-  };
-
-  this.scrollToPage = function (pageIndex) {
-    var page = document.getElementById("pdf-page-" + pageIndex);
-    var context = document.querySelector(".pdf-viewer");
-    (0, _velocityAnimate2.default)(page, "scroll", {
-      container: context,
-      duration: 0,
-      queue: false
-    });
-  };
-
-  this.onLoaded = function () {
-    _this2.props.onViewLoadComplete();
   };
 
   this.toggleThumbnailsView = function () {
@@ -279,34 +280,36 @@ var _initialiseProps = function _initialiseProps() {
 PDFReader.defaultProps = {
   rotate: 0,
   scale: 1,
-  renderType: "canvas",
+  renderType: 'canvas',
   currentPage: 0,
   btnToggle: {
-    label: "toggle thumbnails"
+    label: 'toggle panel'
   },
   btnUp: {
-    label: "Up"
+    label: 'Up'
   },
   btnDown: {
-    label: "Down"
+    label: 'Down'
   },
   btnZoomIn: {
-    label: "Zoom In"
+    label: 'Zoom In'
   },
   btnZoomOut: {
-    label: "Zoom Out"
+    label: 'Zoom Out'
   },
   btnFitWidth: {
-    label: "Fit Width"
+    label: 'Fit Width'
   },
-  loadingLabel: "PDF Document Loading ...",
-  pageCountLabel: "in"
+  loadingLabel: 'PDF Document Loading ...',
+  pageCountLabel: 'in',
+  onViewLoadComplete: null
 };
 
 PDFReader.propTypes = {
   file: _propTypes2.default.string,
   rotate: _propTypes2.default.number,
   renderType: _propTypes2.default.string,
+  currentPage: _propTypes2.default.number,
   scale: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.number]),
   width: _propTypes2.default.number,
   btnToggle: _propTypes2.default.oneOfType([_propTypes2.default.shape({
@@ -346,7 +349,8 @@ PDFReader.propTypes = {
     iconButton: _propTypes2.default.bool
   }), _propTypes2.default.element]),
   loadingLabel: _propTypes2.default.string,
-  pageCountLabel: _propTypes2.default.string
+  pageCountLabel: _propTypes2.default.string,
+  onViewLoadComplete: _propTypes2.default.func
 };
 
 exports.default = PDFReader;

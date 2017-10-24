@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -8,11 +8,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Button = require("./Button");
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _Button = require('./Button');
 
 var _Button2 = _interopRequireDefault(_Button);
 
@@ -44,8 +48,8 @@ var ToolsBar = function (_Component) {
 
     _this._handleChange = function (e) {
       var numPages = _this.props.numPages;
-
       var value = e.target.value;
+
       if (value > 0 && value <= numPages) {
         _this.setState({ inputPage: e.target.value });
       }
@@ -64,14 +68,14 @@ var ToolsBar = function (_Component) {
   }
 
   _createClass(ToolsBar, [{
-    key: "componentWillReceiveProps",
+    key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
       if (nextProps.currentPage + 1 !== this.state.inputPage) {
         this.setState({ inputPage: nextProps.currentPage + 1 });
       }
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _props2 = this.props,
           currentPage = _props2.currentPage,
@@ -90,44 +94,47 @@ var ToolsBar = function (_Component) {
 
 
       return _react2.default.createElement(
-        "div",
-        { className: "pdf-reader-header" },
+        'div',
+        { className: 'pdf-reader-header' },
         _react2.default.createElement(
-          "div",
-          { className: "toggle-sidebar" },
+          'div',
+          { className: 'toggle-sidebar' },
           this.getButton(btnToggle, toggleHandler)
         ),
         _react2.default.createElement(
-          "div",
-          { className: "zoom-actions" },
+          'div',
+          { className: 'zoom-actions' },
           this.getButton(btnZoomOut, function () {
-            return zoomHandler("out");
+            return zoomHandler('out');
           }),
           this.getButton(btnZoomIn, function () {
-            return zoomHandler("in");
+            return zoomHandler('in');
           }),
           this.getButton(btnFitWidth, function () {
-            return zoomHandler("fitWidth");
+            return zoomHandler('fitWidth');
           })
         ),
         _react2.default.createElement(
-          "span",
+          'span',
           null,
           this.getButton(btnUp, function () {
             return scrollToPageHandler(currentPage - 1);
           }),
           _react2.default.createElement(
-            "strong",
-            { className: "count-page" },
-            _react2.default.createElement("input", { type: "number", value: inputPage,
+            'strong',
+            { className: 'count-page' },
+            _react2.default.createElement('input', {
+              type: 'number',
+              value: inputPage,
               onChange: this._handleChange,
               onBlur: function onBlur() {
                 return scrollToPageHandler(inputPage - 1);
               },
-              onKeyPress: this._handleKeyPress }),
-            " ",
+              onKeyPress: this._handleKeyPress
+            }),
+            ' ',
             pageCountLabel,
-            " ",
+            ' ',
             numPages || 0
           ),
           this.getButton(btnDown, function () {
@@ -140,5 +147,50 @@ var ToolsBar = function (_Component) {
 
   return ToolsBar;
 }(_react.Component);
+
+ToolsBar.propTypes = {
+  currentPage: _propTypes2.default.number.isRequired,
+  numPages: _propTypes2.default.number.isRequired,
+  btnToggle: _propTypes2.default.oneOfType([_propTypes2.default.shape({
+    label: _propTypes2.default.string,
+    classname: _propTypes2.default.string,
+    iconClassname: _propTypes2.default.string,
+    iconButton: _propTypes2.default.bool
+  }), _propTypes2.default.element]),
+  btnUp: _propTypes2.default.oneOfType([_propTypes2.default.shape({
+    label: _propTypes2.default.string,
+    classname: _propTypes2.default.string,
+    iconClassname: _propTypes2.default.string,
+    iconButton: _propTypes2.default.bool
+  }), _propTypes2.default.element]),
+  btnDown: _propTypes2.default.oneOfType([_propTypes2.default.shape({
+    label: _propTypes2.default.string,
+    classname: _propTypes2.default.string,
+    iconClassname: _propTypes2.default.string,
+    iconButton: _propTypes2.default.bool
+  }), _propTypes2.default.element]),
+  btnZoomIn: _propTypes2.default.oneOfType([_propTypes2.default.shape({
+    label: _propTypes2.default.string,
+    classname: _propTypes2.default.string,
+    iconClassname: _propTypes2.default.string,
+    iconButton: _propTypes2.default.bool
+  }), _propTypes2.default.element]),
+  btnZoomOut: _propTypes2.default.oneOfType([_propTypes2.default.shape({
+    label: _propTypes2.default.string,
+    classname: _propTypes2.default.string,
+    iconClassname: _propTypes2.default.string,
+    iconButton: _propTypes2.default.bool
+  }), _propTypes2.default.element]),
+  btnFitWidth: _propTypes2.default.oneOfType([_propTypes2.default.shape({
+    label: _propTypes2.default.string,
+    classname: _propTypes2.default.string,
+    iconClassname: _propTypes2.default.string,
+    iconButton: _propTypes2.default.bool
+  }), _propTypes2.default.element]),
+  pageCountLabel: _propTypes2.default.string,
+  scrollToPageHandler: _propTypes2.default.func.isRequired,
+  zoomHandler: _propTypes2.default.func.isRequired,
+  toggleHandler: _propTypes2.default.func.isRequired
+};
 
 exports.default = ToolsBar;

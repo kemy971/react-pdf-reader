@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,17 +6,21 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _classnames = require("classnames");
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-require("waypoints/lib/noframework.waypoints.js");
+require('waypoints/lib/noframework.waypoints');
 
-require("waypoints/lib/shortcuts/inview.js");
+require('waypoints/lib/shortcuts/inview');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25,8 +29,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Waypoint = window.Waypoint;
 
 var Thumbnail = function (_Component) {
   _inherits(Thumbnail, _Component);
@@ -51,7 +53,7 @@ var Thumbnail = function (_Component) {
       var width = 100;
 
       var pageScale = width / page.getViewport(scale, rotate).width;
-      pageScale = scale * pageScale;
+      pageScale *= scale;
 
       return page.getViewport(pageScale * pixelRatio, rotate);
     }, _this.renderThumbnail = function () {
@@ -61,14 +63,14 @@ var Thumbnail = function (_Component) {
 
       var viewport = _this.getViewport();
 
-      //Render thumbnail canvas for all pages
+      // Render thumbnail canvas for all pages
 
-      var canvas = document.createElement("canvas");
+      var canvas = document.createElement('canvas');
       canvas.height = viewport.height;
       canvas.width = viewport.width;
-      canvas.style.height = viewport.height / pixelRatio + "px";
-      canvas.style.width = viewport.width / pixelRatio + "px";
-      var canvasContext = canvas.getContext("2d");
+      canvas.style.height = viewport.height / pixelRatio + 'px';
+      canvas.style.width = viewport.width / pixelRatio + 'px';
+      var canvasContext = canvas.getContext('2d');
       var renderContext = {
         canvasContext: canvasContext,
         viewport: viewport
@@ -83,7 +85,7 @@ var Thumbnail = function (_Component) {
   }
 
   _createClass(Thumbnail, [{
-    key: "componentWillMount",
+    key: 'componentWillMount',
     value: function componentWillMount() {
       var pixelRatio = window.devicePixelRatio || 1;
       var viewport = this.getViewport();
@@ -93,20 +95,23 @@ var Thumbnail = function (_Component) {
       };
     }
   }, {
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       var _this2 = this;
 
-      new Waypoint.Inview({
+      var _window = window,
+          Waypoint = _window.Waypoint;
+
+      this.waypoint = new Waypoint.Inview({
         element: this.thumbnailContainer,
-        context: document.querySelector(".pdf-thumbnail-viewer"),
+        context: document.querySelector('.pdf-thumbnail-viewer'),
         enter: function enter() {
           _this2.renderThumbnail();
         }
       });
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _this3 = this;
 
@@ -116,24 +121,25 @@ var Thumbnail = function (_Component) {
           pageIndex = _props.pageIndex;
 
       return _react2.default.createElement(
-        "div",
+        'div',
         {
           ref: function ref(div) {
             return _this3.thumbnailContainer = div;
           },
-          className: (0, _classnames2.default)("pdf-thumbnail", { active: isCurrentPage })
+          className: (0, _classnames2.default)('pdf-thumbnail', { active: isCurrentPage })
         },
-        _react2.default.createElement("img", {
+        _react2.default.createElement('img', {
           width: this.imgPlaceholder.width,
           height: this.imgPlaceholder.height,
           ref: function ref(img) {
             return _this3.thumbnail = img;
           },
-          alt: "pdf-thumbnail-" + (pageIndex + 1),
-          onClick: onSelect
+          alt: 'pdf-thumbnail-' + (pageIndex + 1),
+          onClick: onSelect,
+          role: 'presentation'
         }),
         _react2.default.createElement(
-          "h5",
+          'h5',
           null,
           pageIndex + 1
         )
@@ -143,5 +149,12 @@ var Thumbnail = function (_Component) {
 
   return Thumbnail;
 }(_react.Component);
+
+Thumbnail.propTypes = {
+  page: _propTypes2.default.object.isRequired,
+  isCurrentPage: _propTypes2.default.bool.isRequired,
+  onSelect: _propTypes2.default.func.isRequired,
+  pageIndex: _propTypes2.default.number.isRequired
+};
 
 exports.default = Thumbnail;

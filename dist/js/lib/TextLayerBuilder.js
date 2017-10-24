@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+/* eslint-disable */
 /* Copyright 2012 Mozilla Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +35,7 @@ Object.defineProperty(exports, "__esModule", {
  * also provides a way to highlight text that is being searched for.
  * @class
  */
-var TextLayerBuilder = exports.TextLayerBuilder = function TextLayerBuilderClosure() {
+var TextLayerBuilder = function TextLayerBuilderClosure() {
   function TextLayerBuilder(options) {
     this.textLayerDiv = options.textLayerDiv;
     this.renderingDone = false;
@@ -70,6 +71,8 @@ var TextLayerBuilder = exports.TextLayerBuilder = function TextLayerBuilderClosu
      *   for specified amount of ms.
      */
     render: function TextLayerBuilder_render(timeout) {
+      var _this = this;
+
       if (!this.divContentDone || this.renderingDone) {
         return;
       }
@@ -89,10 +92,10 @@ var TextLayerBuilder = exports.TextLayerBuilder = function TextLayerBuilderClosu
         timeout: timeout
       });
       this.textLayerRenderTask.promise.then(function () {
-        this.textLayerDiv.appendChild(textLayerFrag);
-        this._finishRendering();
-        this.updateMatches();
-      }.bind(this), function (reason) {
+        _this.textLayerDiv.appendChild(textLayerFrag);
+        _this._finishRendering();
+        _this.updateMatches();
+      }, function (reason) {
         // canceled or failed to render text layer -- skipping errors
       });
     },
@@ -289,21 +292,21 @@ var TextLayerBuilder = exports.TextLayerBuilder = function TextLayerBuilderClosu
         if (!end) {
           return;
         }
-        //#if !(MOZCENTRAL || FIREFOX)
+        // #if !(MOZCENTRAL || FIREFOX)
         // On non-Firefox browsers, the selection will feel better if the height
         // of the endOfContent div will be adjusted to start at mouse click
         // location -- this will avoid flickering when selections moves up.
         // However it does not work when selection started on empty space.
         var adjustTop = e.target !== div;
-        //#if GENERIC
+        // #if GENERIC
         adjustTop = adjustTop && window.getComputedStyle(end).getPropertyValue('-moz-user-select') !== 'none';
-        //#endif
+        // #endif
         if (adjustTop) {
           var divBounds = div.getBoundingClientRect();
           var r = Math.max(0, (e.pageY - divBounds.top) / divBounds.height);
           end.style.top = (r * 100).toFixed(2) + '%';
         }
-        //#endif
+        // #endif
         end.classList.add('active');
       });
       div.addEventListener('mouseup', function (e) {
@@ -311,9 +314,9 @@ var TextLayerBuilder = exports.TextLayerBuilder = function TextLayerBuilderClosu
         if (!end) {
           return;
         }
-        //#if !(MOZCENTRAL || FIREFOX)
+        // #if !(MOZCENTRAL || FIREFOX)
         end.style.top = '';
-        //#endif
+        // #endif
         end.classList.remove('active');
       });
     }
@@ -321,10 +324,13 @@ var TextLayerBuilder = exports.TextLayerBuilder = function TextLayerBuilderClosu
   return TextLayerBuilder;
 }();
 
+exports.default = TextLayerBuilder;
+
 /**
  * @constructor
  * @implements IPDFTextLayerFactory
  */
+
 function DefaultTextLayerFactory() {}
 DefaultTextLayerFactory.prototype = {
   /**
