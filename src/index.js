@@ -1,11 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import './PdfReader.css';
-import './TextLayerBuilder.css'
-import PDFReader from './js/index.js';
+import './TextLayerBuilder.css';
+import PDFReader from './js/index';
 
-let ToggleBtn = <button>toggle panel</button>;
-
-ReactDOM.render( <PDFReader 
-    file="/sample.pdf"  renderType="canvas" btnToggle={ToggleBtn}/> ,
-    document.getElementById('root'));
+render(
+  <PDFReader
+    file="/sample.pdf"
+    renderType="canvas"
+  />,
+  document.getElementById('root'),
+);

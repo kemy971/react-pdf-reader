@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,21 +6,27 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-require("pdfjs-dist/webpack");
+var _propTypes = require('prop-types');
 
-require("pdfjs-dist/web/compatibility");
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
-require("waypoints/lib/noframework.waypoints.js");
+require('pdfjs-dist/build/pdf.combined');
 
-require("waypoints/lib/shortcuts/inview.js");
+require('pdfjs-dist/web/compatibility');
 
-var _Viewport = require("../lib/Viewport");
+require('waypoints/lib/noframework.waypoints');
 
-var _TextLayerBuilder = require("../lib/TextLayerBuilder.js");
+require('waypoints/lib/shortcuts/inview');
+
+var _Viewport = require('../lib/Viewport');
+
+var _TextLayerBuilder = require('../lib/TextLayerBuilder');
+
+var _TextLayerBuilder2 = _interopRequireDefault(_TextLayerBuilder);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30,8 +36,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PDFJS = window.PDFJS;
-var Waypoint = window.Waypoint;
+var _window = window,
+    PDFJS = _window.PDFJS,
+    Waypoint = _window.Waypoint;
 
 var Page = function (_Component) {
   _inherits(Page, _Component);
@@ -41,33 +48,17 @@ var Page = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 
-    _this.updatePage = function () {
-      _this.renderPagePlaceholder(_this.getViewport().viewportDefaultRatio);
-      _this.refreshWaypoints();
-      _this.cleanPage();
-      if (_this.state.isInview) {
-        _this.renderPage();
-      } else {
-        _this.setState({ scaleChange: true });
-      }
+    _this.getViewport = function () {
+      var page = _this.props.page;
+      var scale = _this.state.scale;
+
+      var rotate = _this.props.rotate || 0;
+
+      return (0, _Viewport.getViewport)(page, scale, rotate);
     };
 
-    _this.initPage = function () {
-      var _this$getViewport = _this.getViewport(),
-          viewport = _this$getViewport.viewport,
-          viewportDefaultRatio = _this$getViewport.viewportDefaultRatio;
-
-      _this.renderPagePlaceholder(viewportDefaultRatio);
-      _this.initWaypoint(viewport.height);
-    };
-
-    _this.cleanPage = function () {
-      if (_this.props.renderType === "svg") {
-        _this._svg.innerHTML = "";
-      } else {
-        var ctx = _this._canvas.getContext('2d');
-        ctx.clearRect(0, 0, _this._canvas.width, _this._canvas.height);
-      }
+    _this.refreshWaypoints = function () {
+      Waypoint.refreshAll();
     };
 
     _this.initWaypoint = function (pageHeight) {
@@ -75,13 +66,13 @@ var Page = function (_Component) {
           page = _this$props.page,
           onVisibleOnViewport = _this$props.onVisibleOnViewport;
 
-      var context = document.querySelector(".pdf-viewer");
+      var context = document.querySelector('.pdf-viewer');
       _this.waypoints = [new Waypoint({
         offset: pageHeight / 4,
         element: _this._page,
         context: context,
         handler: function handler(direction) {
-          if (direction === "down") {
+          if (direction === 'down') {
             onVisibleOnViewport(page.pageIndex);
           }
         }
@@ -90,7 +81,7 @@ var Page = function (_Component) {
         element: _this._page,
         context: context,
         handler: function handler(direction) {
-          if (direction === "up") {
+          if (direction === 'up') {
             onVisibleOnViewport(page.pageIndex);
           }
         }
@@ -114,17 +105,33 @@ var Page = function (_Component) {
       })];
     };
 
-    _this.refreshWaypoints = function () {
-      Waypoint.refreshAll();
+    _this.cleanPage = function () {
+      if (_this.props.renderType === 'svg') {
+        _this._svg.innerHTML = '';
+      } else {
+        var ctx = _this._canvas.getContext('2d');
+        ctx.clearRect(0, 0, _this._canvas.width, _this._canvas.height);
+      }
     };
 
-    _this.getViewport = function () {
-      var page = _this.props.page;
-      var scale = _this.state.scale;
+    _this.initPage = function () {
+      var _this$getViewport = _this.getViewport(),
+          viewport = _this$getViewport.viewport,
+          viewportDefaultRatio = _this$getViewport.viewportDefaultRatio;
 
-      var rotate = _this.props.rotate || 0;
+      _this.renderPagePlaceholder(viewportDefaultRatio);
+      _this.initWaypoint(viewport.height);
+    };
 
-      return (0, _Viewport.getViewport)(page, scale, rotate);
+    _this.updatePage = function () {
+      _this.renderPagePlaceholder(_this.getViewport().viewportDefaultRatio);
+      _this.refreshWaypoints();
+      _this.cleanPage();
+      if (_this.state.isInview) {
+        _this.renderPage();
+      } else {
+        _this.setState({ scaleChange: true });
+      }
     };
 
     _this.renderPage = function () {
@@ -136,7 +143,7 @@ var Page = function (_Component) {
       var pixelRatio = window.devicePixelRatio || 1;
 
       _this.renderPagePlaceholder(viewports.viewportDefaultRatio);
-      if (renderType === "svg") {
+      if (renderType === 'svg') {
         _this.renderPageSVG(page, pixelRatio, viewports);
       } else {
         _this.renderPageCanvas(page, pixelRatio, viewports);
@@ -148,22 +155,22 @@ var Page = function (_Component) {
     };
 
     _this.renderPagePlaceholder = function (viewportDefaultRatio) {
-      _this._page.style.width = viewportDefaultRatio.width + "px";
-      _this._page.style.height = viewportDefaultRatio.height + "px";
+      _this._page.style.width = viewportDefaultRatio.width + 'px';
+      _this._page.style.height = viewportDefaultRatio.height + 'px';
     };
 
     _this.renderPageSVG = function (page, pixelRatio, _ref) {
       var viewportDefaultRatio = _ref.viewportDefaultRatio;
 
-      _this._svg.style.width = viewportDefaultRatio.width + "px";
-      _this._svg.style.height = viewportDefaultRatio.height + "px";
+      _this._svg.style.width = viewportDefaultRatio.width + 'px';
+      _this._svg.style.height = viewportDefaultRatio.height + 'px';
 
       // SVG rendering by PDF.js
       page.getOperatorList().then(function (opList) {
         var svgGfx = new PDFJS.SVGGraphics(page.commonObjs, page.objs);
         return svgGfx.getSVG(opList, viewportDefaultRatio);
       }).then(function (svg) {
-        _this._svg.innerHTML = "";
+        _this._svg.innerHTML = '';
         _this._svg.appendChild(svg);
       });
     };
@@ -173,9 +180,9 @@ var Page = function (_Component) {
 
       _this._canvas.height = viewport.height;
       _this._canvas.width = viewport.width;
-      _this._canvas.style.height = viewport.height / pixelRatio + "px";
-      _this._canvas.style.width = viewport.width / pixelRatio + "px";
-      var canvasContext = _this._canvas.getContext("2d");
+      _this._canvas.style.height = viewport.height / pixelRatio + 'px';
+      _this._canvas.style.width = viewport.width / pixelRatio + 'px';
+      var canvasContext = _this._canvas.getContext('2d');
       var renderContext = {
         canvasContext: canvasContext,
         viewport: viewport
@@ -190,8 +197,8 @@ var Page = function (_Component) {
 
     _this.renderTextLayer = function (page, viewportDefaultRatio) {
       if (_this._textContent) {
-        _this._textLayerDiv.innerHTML = "";
-        _this._textLayer = new _TextLayerBuilder.TextLayerBuilder({
+        _this._textLayerDiv.innerHTML = '';
+        _this._textLayer = new _TextLayerBuilder2.default({
           textLayerDiv: _this._textLayerDiv,
           pageIndex: page.pageIndex,
           viewport: viewportDefaultRatio
@@ -205,7 +212,7 @@ var Page = function (_Component) {
       } else {
         page.getTextContent().then(function (textContent) {
           _this._textContent = textContent;
-          _this._textLayer = new _TextLayerBuilder.TextLayerBuilder({
+          _this._textLayer = new _TextLayerBuilder2.default({
             textLayerDiv: _this._textLayerDiv,
             pageIndex: page.pageIndex,
             viewport: viewportDefaultRatio
@@ -224,18 +231,17 @@ var Page = function (_Component) {
       scale: props.scale,
       isInview: false,
       scaleChange: false
-
     };
     return _this;
   }
 
   _createClass(Page, [{
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       this.initPage();
     }
   }, {
-    key: "componentWillReceiveProps",
+    key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
       var _this2 = this;
 
@@ -246,7 +252,7 @@ var Page = function (_Component) {
       }
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _this3 = this;
 
@@ -255,20 +261,20 @@ var Page = function (_Component) {
           renderType = _props.renderType;
 
       return _react2.default.createElement(
-        "div",
+        'div',
         {
           ref: function ref(div) {
             return _this3._page = div;
           },
-          className: "pdf-page",
-          id: "pdf-page-" + page.pageIndex
+          className: 'pdf-page',
+          id: 'pdf-page-' + page.pageIndex
         },
-        _react2.default.createElement("div", { ref: function ref(div) {
+        _react2.default.createElement('div', { ref: function ref(div) {
             return _this3._textLayerDiv = div;
-          }, className: "textLayer" }),
-        renderType === "svg" ? _react2.default.createElement("div", { ref: function ref(div) {
+          }, className: 'textLayer' }),
+        renderType === 'svg' ? _react2.default.createElement('div', { ref: function ref(div) {
             return _this3._svg = div;
-          }, className: "svg" }) : _react2.default.createElement("canvas", { ref: function ref(canvas) {
+          }, className: 'svg' }) : _react2.default.createElement('canvas', { ref: function ref(canvas) {
             return _this3._canvas = canvas;
           } })
       );
@@ -277,5 +283,13 @@ var Page = function (_Component) {
 
   return Page;
 }(_react.Component);
+
+Page.propTypes = {
+  scale: _propTypes2.default.number.isRequired,
+  renderType: _propTypes2.default.string.isRequired,
+  page: _propTypes2.default.object.isRequired,
+  onVisibleOnViewport: _propTypes2.default.func.isRequired,
+  rotate: _propTypes2.default.number.isRequired
+};
 
 exports.default = Page;

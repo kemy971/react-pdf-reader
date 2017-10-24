@@ -1,34 +1,57 @@
 {
   "name": "react-pdf-reader",
-  "version": "0.1.5",
+  "version": "0.1.8",
   "main": "dist/js/index.js",
-  "repository": "https://github.com/kemy971/react-pdf-reader",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kemy971/react-pdf-reader"
+  },
+  "keywords": [
+    "ReactJS",
+    "PDFJS",
+    "PDF"
+  ],
+  "author": "Kémy CASSIN",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/kemy971/react-pdf-reader/issues"
+  },
   "dependencies": {
     "classnames": "^2.2.5",
-    "pdfjs-dist": "^1.8.559",
-    "prop-types": "^15.5.10",
+    "pdfjs-dist": "^1.10.83",
+    "prop-types": "^15.6.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "velocity-animate": "^1.5.0",
     "waypoints": "^4.0.1"
   },
   "devDependencies": {
-    "babel-preset-env": "^1.6.0",
+    "babel-eslint": "^8.0.1",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-15": "^1.0.2",
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
     "node-sass-chokidar": "^0.0.3",
     "npm-run-all": "^4.0.2",
-    "react-scripts": "1.0.10"
+    "react-scripts": "^1.0.14",
+    "react-test-renderer": "^16.0.0"
   },
   "scripts": {
+    "lint": "./node_modules/.bin/eslint ./src/js/**/*.js",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build": "babel src/ -d dist/ --copy-files --ignore src/index.js",
     "build-css": "node-sass-chokidar src/sass/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/sass/ -o src/ --watch --recursive",
+    "pretest": "npm run lint",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }

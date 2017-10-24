@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 /**
  * Get the page viewport
- * @param { PageProxy } page 
- * @param { Number } scale 
- * @param { Number } rotate 
+ * @param { PageProxy } page
+ * @param { Number } scale
+ * @param { Number } rotate
  */
 var getViewport = exports.getViewport = function getViewport(page) {
   var scale = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
@@ -29,7 +29,7 @@ var getMinZoomScale = exports.getMinZoomScale = function getMinZoomScale(page, c
   var _getViewport = getViewport(page),
       viewportDefaultRatio = _getViewport.viewportDefaultRatio;
 
-  var containerHeight = container.offsetHeight * .9;
+  var containerHeight = container.offsetHeight * 0.9;
   var pageHeight = viewportDefaultRatio.height;
   return containerHeight / pageHeight;
 };
@@ -38,7 +38,7 @@ var getFitWidthScale = exports.getFitWidthScale = function getFitWidthScale(page
   var _getViewport2 = getViewport(page),
       viewportDefaultRatio = _getViewport2.viewportDefaultRatio;
 
-  var containerWidth = container.offsetWidth * .9;
+  var containerWidth = container.offsetWidth * 0.9;
   var pageWidth = viewportDefaultRatio.width;
   return containerWidth / pageWidth;
 };

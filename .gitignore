@@ -1,6 +1,8 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 .vscode/
+/dist/js/**/__tests__
+/dist/js/testconfig
 
 # dependencies
 /node_modules
